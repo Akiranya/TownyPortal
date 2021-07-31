@@ -1,0 +1,129 @@
+gui:
+  right: "&a&l是"
+  wrong: "&c&l否"
+  shop-listing:
+    title: "玩家商店列表 - 快捷指令 /ts shops"
+    shop-icon:
+      unavailable: "&8不可用"
+      break-line: "&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-"
+      lore1: "&b店主 &7: &r{owner}"
+      lore2: "&b正在出售 &7: &8每 &e{amount}&8 个 &7/ &e{buy_price} &8软妹币"
+      lore2-unavailable: "&b正在出售 &7: &8该商店不支持"
+      lore3: "&b正在收购 &7: &8每 &e{amount} &8个 &7/ &e{sell_price} &8软妹币"
+      lore3-unavailable: "&b正在收购 &7: &8该商店不支持"
+      lore4: " &7&l>>&6 点击传送到商店所在城镇传送点"
+    filter-all-shop:
+      name: "&b&l筛选商店 &7:&e 显示全部"
+      lore1: "&6点击&7显示全部商店"
+      lore2: "&7你也许可以出售/收购"
+    filter-buy-shop:
+      name: "&b&l筛选商店 &7:&e 只显示出售商店"
+      lore1: "&6点击&7只显示你可以购买东西的商店"
+      lore2: "&7在这些商店, 你可以花软妹币买到东西"
+    filter-sell-shop:
+      name: "&b&l筛选商店 &7:&e 只显示收购商店"
+      lore1: "&6点击&7只显示你可以出售东西的商店"
+      lore2: "&7在这些商店, 你可以出售东西赚软妹币"
+    next-page:
+      name: "&8&l>>> &b&l查看下一页"
+      lore1: ""
+      lore2: "&7当前页 &b{current_page} &7/&b {total_page}"
+    previous-page:
+      name: "&8&l<<< &b&l查看上一页"
+      lore1: ""
+      lore2: "&7当前页 &b{current_page} &7/&b {total_page}"
+  town-listing:
+    title: "服务器城镇列表 - 快捷指令 /ts"
+    menu-tips:
+      name: "&7欢迎来到 &b服务器城镇列表 ( ´ ▽ ` )ﾉ"
+      lore1: "&7"
+      lore2: "&a在这里你可以查看服务器当前活跃的城镇!"
+      lore3: "&a可以选择去参观, 游玩亦或是加入他们!"
+      lore4: "&7"
+    town-entry:
+      default-board: "&8[&7镇长可以使用 &e/ts board&7 修改本信息&8]"
+      name: "&e&l城镇 &8[&b&l{town_name}&8]"
+      lore1: "&7&l镇长 : &f{mayor_name}"
+      lore2: "&d&l拥有商店 &7&l: &e&l{shop_num} &8个"
+      lore3: " &8&l> &7点击查看详情"
+    next-page:
+      name: "&8&l>>> &b&l查看下一页"
+      lore1: ""
+      lore2: "&7当前页 &b{current_page} &7/&b {total_page}"
+    previous-page:
+      name: "&8&l<<< &b&l查看上一页"
+      lore1: ""
+      lore2: "&7当前页 &b{current_page} &7/&b {total_page}"
+    back:
+      name: "&f&l返回"
+      lore1: ""
+      lore2: " &8&l> &7返回上级菜单"
+  town-options:
+    teleport-to-town:
+      name: "&b&l传送到城镇 &e{town_name}"
+      lore1: " &8&l> &7点击传送到城镇"
+    join-town:
+      name: "&b&l加入城镇 &e{town_name}"
+      lore1: "&a点击发送公屏求城公告!"
+      lore2: "&a尝试一下吧!"
+      lore3: " &8&l> &7点击申请加入城镇"
+    town-level:
+      name: "&b&l城镇等级: &7{prefix}{postfix}"
+      lore1: "&8城镇等级一定程度上代表了城镇的规模"
+    town-resident:
+      name: "&b&l城镇居民数: &7&l{resident_num} &8个"
+      lore1: "&8该城镇所拥有的总居民数"
+      lore2: "&7&l居民列表 :"
+    town-plots:
+      name: "&b&l城镇领地大小: &7&l{town_block_size} &8区块"
+      lore1: "&8城镇的领地单位为区块"
+      lore2: "&8越大的领地可以给城镇提供"
+      lore3: "&8越大的受保护可建筑面积"
+    town-bankrupt:
+      bankrupt: "&c破产"
+      non-bankrupt: "&a良好"
+      name: "&b&l运营状况: &7{bankrupt_status}"
+      lore1: "&8破产/良好是衡量当前城镇状况的指标"
+      lore3: "&8当城镇无法承担其维护费,就进入破产状态"
+      lore2: "&8破产的城镇不可建造,不可圈地,也不可邀人"
+    town-map:
+      name: "&e&l城镇俯视图"
+      lore1: "&8获取一张该城镇的地图"
+      lore2: ""
+      lore3: "&c该功能仍在开发中,敬请期待 :)"
+    town-taxes:
+      name: "&b&l城镇居民税: &e&l{taxes} &8(百分制: {is_tax_percentage}&8)"
+      lore1: "&8城镇税是每日城镇居民需要"
+      lore2: "&8向城镇银行缴纳的软妹币数额"
+      lore3: "&8如居民负担不起,则会被自动踢出城镇"
+    town-outposts:
+      name: "&b&l城镇前哨站: &7&l{outpost_num} &8个"
+      lore1: "&8城镇前哨站是远离城镇中心"
+      lore2: "&8的城镇领地,具有远征和"
+      lore3: "&8充当额外传送点的作用"
+    town-bank:
+      name: "&b&l城镇银行: &7&l{bank_balance} &e软妹币"
+      lore1: "&8城镇银行是城镇的共有资产"
+      lore2: "&8城镇的所有支出(如圈地)都需要从城镇银行"
+      lore3: "&8中扣取,每个居民都可向银行存钱,但不可取出"
+    back:
+      name: "&f&l返回"
+      lore1: ""
+      lore2: " &8&l> &7返回上级菜单"
+chat-message:
+  plugin-config-reloaded: "&6TownyPortal 的配置和语言文件已重载."
+  plugin-datasource-reloaded: "&6TownyPortal 的数据文件已重载."
+  say-to-join-town: "#FF99CC有没有城镇收下我这只可爱的萌新呀?"
+  only-mayor-can-use: "&c你不是镇长...只有城镇的镇长可以修改城镇公告板."
+  town-board-view-title: "&80o.----------- &e&l城镇公告板&8 -----------.o0"
+  exceed-town-board-max-line: "&c城镇公告板已达到最大行数."
+  town-board-updated: "&b你的城镇公告板已更新!"
+  town-board-out-of-index: "&c你指定的行数过小/过大."
+  town-board-cleared: "&b城镇公告板已清空!"
+  help:
+    board-view: "&e/ts board view &8-&b 预览当前城镇公告板"
+    board-add: "&e/ts board add <内容> &8-&b 给城镇公告板增加一行内容"
+    board-set: "&e/ts board set <行数> <内容> &8-&b 修改一行的内容"
+    board-delete: "&e/ts board delete <行数> &8-&b 删除一行内容"
+    board-clear: "&e/ts board clear &8-&b 清除城镇公告板"
+
