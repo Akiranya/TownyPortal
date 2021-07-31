@@ -13,10 +13,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class TownListener implements TerminableModule {
 
-    private final TownModelDatasource townModelDataSource;
+    private final TownModelDatasource townModelDatasource;
 
-    public TownListener(TownModelDatasource townModelDataSource) {
-        this.townModelDataSource = townModelDataSource;
+    public TownListener(TownModelDatasource townModelDatasource) {
+        this.townModelDatasource = townModelDatasource;
     }
 
     @Override
@@ -27,13 +27,13 @@ public class TownListener implements TerminableModule {
             if (TownyPortal.plugin.isDebugMode()) {
                 TownyPortal.plugin.getLogger().info("New town %s created, adding town model to data source".formatted(e.getTown().getName()));
             }
-            townModelDataSource.addTownModel(new TownModel(e.getTown().getUUID()));
+            townModelDatasource.addTownModel(new TownModel(e.getTown().getUUID()));
         }).bindWith(consumer);
         Events.subscribe(DeleteTownEvent.class).handler(e -> {
             if (TownyPortal.plugin.isDebugMode()) {
                 TownyPortal.plugin.getLogger().info("Town %s deleted, removing town model from data source".formatted(e.getTownName()));
             }
-            townModelDataSource.removeTownModel(e.getTownUUID());
+            townModelDatasource.removeTownModel(e.getTownUUID());
         }).bindWith(consumer);
 
         // handle towny's bug: default public setting doesn't work

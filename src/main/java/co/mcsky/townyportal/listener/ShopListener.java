@@ -21,13 +21,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class ShopListener implements TerminableModule {
 
-    private final TownModelDatasource townModelDataSource;
-    private final ShopModelDatasource shopModelDataSource;
+    private final TownModelDatasource townModelDatasource;
+    private final ShopModelDatasource shopModelDatasource;
     private final TownyAPI townyAPI;
 
-    public ShopListener(TownModelDatasource townModelDataSource, ShopModelDatasource shopModelDataSource) {
-        this.townModelDataSource = townModelDataSource;
-        this.shopModelDataSource = shopModelDataSource;
+    public ShopListener(TownModelDatasource townModelDatasource, ShopModelDatasource shopModelDatasource) {
+        this.townModelDatasource = townModelDatasource;
+        this.shopModelDatasource = shopModelDatasource;
         this.townyAPI = TownyAPI.getInstance();
     }
 
@@ -61,7 +61,7 @@ public class ShopListener implements TerminableModule {
             // increment shop num
             if (TownyPortal.plugin.isDebugMode())
                 TownyPortal.plugin.getLogger().info("Town %s's shop num increment".formatted(town.getName()));
-            TownModel townModel = townModelDataSource.getTownModel(town.getUUID());
+            TownModel townModel = townModelDatasource.getTownModel(town.getUUID());
             townModel.incrementShopNum();
         }).bindWith(consumer);
 
@@ -77,7 +77,7 @@ public class ShopListener implements TerminableModule {
             // decrement shop num
             if (TownyPortal.plugin.isDebugMode())
                 TownyPortal.plugin.getLogger().info("Town %s's shop num decrement".formatted(town.getName()));
-            TownModel townModel = townModelDataSource.getTownModel(town.getUUID());
+            TownModel townModel = townModelDatasource.getTownModel(town.getUUID());
             townModel.decrementShopNum();
         }).bindWith(consumer);
 
@@ -97,7 +97,7 @@ public class ShopListener implements TerminableModule {
                     }
 
                     final ShopModel shopModel = new ShopModel(town.getUUID(), e.getPlayer().getUniqueId(), e.getSignLines(), sign.getLocation());
-                    shopModelDataSource.addShopModel(shopModel);
+                    shopModelDatasource.addShopModel(shopModel);
                     if (TownyPortal.plugin.isDebugMode()) {
                         TownyPortal.plugin.getLogger().info("Added shop model to datasource successfully");
                     }
@@ -109,7 +109,7 @@ public class ShopListener implements TerminableModule {
                 .handler(e -> {
                     final Sign sign = e.getSign();
                     final Location signLocation = sign.getBlock().getLocation();
-                    shopModelDataSource.removeShopModel(signLocation);
+                    shopModelDatasource.removeShopModel(signLocation);
                     if (TownyPortal.plugin.isDebugMode()) {
                         TownyPortal.plugin.getLogger().info("Removed shop model from datasource");
                     }
