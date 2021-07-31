@@ -96,7 +96,7 @@ public class ShopListener implements TerminableModule {
                         return;
                     }
 
-                    final ShopModel shopModel = new ShopModel(town.getUUID(), e.getPlayer().getUniqueId(), e.getSignLines(), sign.getLocation());
+                    final ShopModel shopModel = new ShopModel(town.getUUID(), e.getPlayer().getUniqueId(), e.getPlayer().getName(), e.getSignLines(), sign.getLocation());
                     shopModelDatasource.addShopModel(shopModel);
                     if (TownyPortal.plugin.isDebugMode()) {
                         TownyPortal.plugin.getLogger().info("Added shop model to datasource successfully");

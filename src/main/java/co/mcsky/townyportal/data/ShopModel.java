@@ -14,6 +14,7 @@ import java.util.UUID;
 
 public record ShopModel(UUID townUuid,
                         UUID ownerUuid,
+                        String ownerName,
                         String[] lines,
                         Location location) {
 

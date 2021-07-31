@@ -19,9 +19,10 @@ public class ShopModelSerializer implements TypeSerializer<ShopModel> {
     public ShopModel deserialize(Type type, ConfigurationNode node) throws SerializationException {
         final UUID town = node.node("town").get(UUID.class);
         final UUID owner = node.node("owner").get(UUID.class);
+        final String ownerName = node.node("owner-name").getString("player");
         final List<String> lines = node.node("sign").getList(String.class, new ArrayList<>());
         final Location location = node.node("location").get(Location.class);
-        return new ShopModel(town, owner, lines.toArray(new String[0]), location);
+        return new ShopModel(town, owner, ownerName, lines.toArray(new String[0]), location);
     }
 
     @Override
@@ -29,6 +30,7 @@ public class ShopModelSerializer implements TypeSerializer<ShopModel> {
         Preconditions.checkNotNull(obj);
         node.node("town").set(obj.townUuid());
         node.node("owner").set(obj.ownerUuid());
+        node.node("owner-name").set(obj.ownerName());
         node.node("sign").setList(String.class, List.of(obj.lines()));
         node.node("location").set(obj.location());
     }

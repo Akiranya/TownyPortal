@@ -60,7 +60,7 @@ public class ShopListingView extends PaginatedView {
                 : TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore3-unavailable");
         return ItemStackBuilder.of(s.getItem())
                 .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.break-line"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore1", "owner", gui.getPlayer().getDisplayName()))
+                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore1", "owner", s.ownerName()))
                 .lore(buyPrice) // buy price
                 .lore(sellPrice) // sell price
                 .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.break-line"))
