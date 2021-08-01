@@ -43,18 +43,19 @@ public abstract class ShopListingSimpleView extends PaginatedView {
     private Item shopIcon(ShopModel s) {
         int shopQuantity = s.getQuantity();
         String buyPrice = s.hasBuyPrice()
-                ? TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore2", "amount", shopQuantity, "buy_price", s.getBuyPrice())
-                : TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore2-unavailable");
-        String sellPrice = s.hasSellPrice()
-                ? TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore3", "amount", shopQuantity, "sell_price", s.getSellPrice())
+                ? TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore3", "amount", shopQuantity, "buy_price", s.getBuyPrice())
                 : TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore3-unavailable");
+        String sellPrice = s.hasSellPrice()
+                ? TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore4", "amount", shopQuantity, "sell_price", s.getSellPrice())
+                : TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore4-unavailable");
         return ItemStackBuilder.of(s.getItem())
                 .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.break-line"))
                 .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore1", "owner", s.ownerName()))
+                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore2", "town", s.getTown().getName()))
                 .lore(buyPrice) // buy price
                 .lore(sellPrice) // sell price
                 .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.break-line"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore4")) // click to teleport
+                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore5")) // click to teleport
                 .build(() -> {
                     try {
                         PaperLib.teleportAsync(gui.getPlayer(), s.getTown().getSpawn());
