@@ -1,7 +1,7 @@
 package co.mcsky.townyportal.gui;
 
 import co.mcsky.townyportal.TownyPortal;
-import co.mcsky.townyportal.data.TownModelDatasource;
+import co.mcsky.townyportal.data.ShopModelDatasource;
 import co.mcsky.townyportal.gui.base.GuiView;
 import co.mcsky.townyportal.gui.base.SeamlessGui;
 import co.mcsky.townyportal.skull.SkullCreator;
@@ -31,7 +31,7 @@ public class TownOptionView implements GuiView {
 
     private final MenuScheme BACKGROUND = new MenuScheme(StandardSchemeMappings.STAINED_GLASS)
             .mask("111111111")
-            .mask("111111111")
+            .mask("101111111")
             .mask("101000001")
             .mask("101000001")
             .mask("111111111")
@@ -43,7 +43,8 @@ public class TownOptionView implements GuiView {
             .scheme(15, 15, 15, 15, 15, 15, 15, 15, 15)
             .scheme(15, 15, 15, 15, 15, 15, 15, 15, 15);
     private final MenuScheme LEFT_OPTIONS = new MenuScheme()
-            .maskEmpty(2)
+            .maskEmpty(1)
+            .mask("010000000")
             .mask("010000000")
             .mask("010000000");
     private final MenuScheme RIGHT_OPTIONS = new MenuScheme()
@@ -56,17 +57,19 @@ public class TownOptionView implements GuiView {
 
     // the parent view
     private final GuiView parentView;
-    // data source
-    private final TownModelDatasource townModelDataSource;
+    // shop model data source
+    private final ShopModelDatasource shopModelDatasource;
 
     // convenient fields
     private final TownyAPI townyApi;
     private final Town chosenTown;
 
-    public TownOptionView(SeamlessGui gui, TownListingView townListingView, TownModelDatasource townModelDataSource) {
+    public TownOptionView(SeamlessGui gui,
+                          TownListingView townListingView,
+                          ShopModelDatasource shopModelDatasource) {
         this.gui = gui;
         this.parentView = townListingView;
-        this.townModelDataSource = townModelDataSource;
+        this.shopModelDatasource = shopModelDatasource;
 
         // convenient fields
         this.townyApi = TownyAPI.getInstance();
@@ -82,7 +85,13 @@ public class TownOptionView implements GuiView {
 
         MenuPopulator leftOptionPopulator = this.LEFT_OPTIONS.newPopulator(this.gui);
 
-        // place left option: teleport to the town
+        // check out shops
+        leftOptionPopulator.accept(ItemStackBuilder.of(Material.GOLD_INGOT)
+                .name(TownyPortal.plugin.getMessage("gui.town-options.shops.name"))
+                .lore(TownyPortal.plugin.getMessage("gui.town-options.shops.lore1"))
+                .lore(TownyPortal.plugin.getMessage("gui.town-options.shops.lore2"))
+                .build(() -> gui.switchView(new ShopListingTownView(this, gui, shopModelDatasource, chosenTown.getUUID()))));
+        // teleport to the town
         leftOptionPopulator.accept(ItemStackBuilder.of(Material.MINECART)
                 .name(TownyPortal.plugin.getMessage("gui.town-options.teleport-to-town.name", "town_name", chosenTown.getName()))
                 .lore("")
@@ -94,7 +103,7 @@ public class TownOptionView implements GuiView {
                         player.sendMessage(e.getMessage());
                     }
                 }));
-        // place left option: join the town
+        // join the town
         leftOptionPopulator.accept(ItemStackBuilder.of(Material.PAPER)
                 .name(TownyPortal.plugin.getMessage("gui.town-options.join-town.name", "town_name", chosenTown.getName()))
                 .lore("")
@@ -135,9 +144,8 @@ public class TownOptionView implements GuiView {
                 .lore("")
                 .lore(TownyPortal.plugin.getMessage("gui.town-options.town-resident.lore2"))
                 .transform(i -> SkullCreator.itemWithBase64(i, skin));
-        for (List<String> partition : partitions) {
+        for (List<String> partition : partitions)
             item.lore(ChatColor.GRAY + partition.stream().reduce(((s1, s2) -> s1 + ", " + s2)).orElse(""));
-        }
         rightOptionPopulator.accept(item.buildItem().build());
 
         // place right option: town plots
@@ -170,7 +178,7 @@ public class TownOptionView implements GuiView {
                 .buildItem().build());
 
         // place right option: town taxes
-        rightOptionPopulator.accept(ItemStackBuilder.of(Material.GOLD_INGOT)
+        rightOptionPopulator.accept(ItemStackBuilder.of(Material.RAW_GOLD)
                 .name(TownyPortal.plugin.getMessage("gui.town-options.town-taxes.name", "taxes", chosenTown.getTaxes(),
                         "is_tax_percentage", chosenTown.isTaxPercentage() ? TownyPortal.plugin.getMessage("gui.right") : TownyPortal.plugin.getMessage("gui.wrong")))
                 .lore("")

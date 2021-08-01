@@ -19,24 +19,14 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class ShopListingView extends PaginatedView {
-
-    private final static MenuScheme FILTER_BUY_SHOP = new MenuScheme()
-            .maskEmpty(5)
-            .mask("000100000");
-    private final static MenuScheme FILTER_SELL_SHOP = new MenuScheme()
-            .maskEmpty(5)
-            .mask("000010000");
-    private final static MenuScheme FILTER_ALL_SHOP = new MenuScheme()
-            .maskEmpty(5)
-            .mask("000001000");
+public abstract class ShopListingSimpleView extends PaginatedView {
 
     // the backed GUI
-    private final SeamlessGui gui;
+    protected final SeamlessGui gui;
     // data source of shop models
-    private final ShopModelDatasource shopModelDataSource;
+    protected final ShopModelDatasource shopModelDataSource;
 
-    public ShopListingView(SeamlessGui gui, ShopModelDatasource shopModelDataSource) {
+    public ShopListingSimpleView(SeamlessGui gui, ShopModelDatasource shopModelDataSource) {
         super(gui);
         this.gui = gui;
         this.shopModelDataSource = shopModelDataSource;
@@ -72,34 +62,6 @@ public class ShopListingView extends PaginatedView {
                         e.printStackTrace();
                     }
                 });
-    }
-
-    @Override
-    public void renderSubview() {
-        FILTER_BUY_SHOP.newPopulator(gui).accept(ItemStackBuilder.of(Material.SPYGLASS)
-                .name(TownyPortal.plugin.getMessage("gui.shop-listing.filter-buy-shop.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-buy-shop.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-buy-shop.lore2"))
-                .build(() -> {
-                    updateContent(ShopFilters.BUY());
-                    render();
-                }));
-        FILTER_SELL_SHOP.newPopulator(gui).accept(ItemStackBuilder.of(Material.SPYGLASS)
-                .name(TownyPortal.plugin.getMessage("gui.shop-listing.filter-sell-shop.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-sell-shop.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-sell-shop.lore2"))
-                .build(() -> {
-                    updateContent(ShopFilters.SELL());
-                    render();
-                }));
-        FILTER_ALL_SHOP.newPopulator(gui).accept(ItemStackBuilder.of(Material.SPYGLASS)
-                .name(TownyPortal.plugin.getMessage("gui.shop-listing.filter-all-shop.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-all-shop.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-all-shop.lore2"))
-                .build(() -> {
-                    updateContent(ShopFilters.ALL());
-                    render();
-                }));
     }
 
     @Override
@@ -154,4 +116,5 @@ public class ShopListingView extends PaginatedView {
                 .mask("111111111")
                 .getMaskedIndexesImmutable();
     }
+
 }

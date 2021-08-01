@@ -1,6 +1,7 @@
 package co.mcsky.townyportal.gui;
 
 import co.mcsky.townyportal.TownyPortal;
+import co.mcsky.townyportal.data.ShopModelDatasource;
 import co.mcsky.townyportal.data.TownModelDatasource;
 import co.mcsky.townyportal.gui.base.PaginatedView;
 import co.mcsky.townyportal.gui.base.SeamlessGui;
@@ -28,17 +29,22 @@ public class TownListingView extends PaginatedView {
 
     // towny api instance
     private final TownyAPI towny;
-    // data source
+    // data source of town model data source
     private final TownModelDatasource townModelDataSource;
+    // data source of shop model data source
+    private final ShopModelDatasource shopModelDatasource;
     // currently viewing town
     private Town chosenTown;
 
-    public TownListingView(SeamlessGui gui, TownModelDatasource townModelDataSource) {
+    public TownListingView(SeamlessGui gui,
+                           TownModelDatasource townModelDataSource,
+                           ShopModelDatasource shopModelDatasource) {
         super(gui);
 
         // constructor args
         this.gui = gui;
         this.townModelDataSource = townModelDataSource;
+        this.shopModelDatasource = shopModelDatasource;
 
         // convenient field
         this.towny = TownyAPI.getInstance();
@@ -148,7 +154,7 @@ public class TownListingView extends PaginatedView {
                 .transform(item -> SkullCache.INSTANCE.itemWithUuid(item, town.getMayor().getUUID()))
                 .build(() -> {
                     this.chosenTown = town;
-                    this.gui.switchView(new TownOptionView(this.gui, this, this.townModelDataSource));
+                    this.gui.switchView(new TownOptionView(gui, this, shopModelDatasource));
                 });
     }
 }

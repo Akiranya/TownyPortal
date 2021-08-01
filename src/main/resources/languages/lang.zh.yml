@@ -6,7 +6,7 @@ gui:
     shop-icon:
       unavailable: "&8不可用"
       break-line: "&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-"
-      lore1: "&b店主 &7: &r{owner}"
+      lore1: "&b店主 &7: &f&l{owner}"
       lore2: "&b正在出售 &7: &8每 &e{amount}&8 个 &7/ &e{buy_price} &8软妹币"
       lore2-unavailable: "&b正在出售 &7: &8该商店不支持"
       lore3: "&b正在收购 &7: &8每 &e{amount} &8个 &7/ &e{sell_price} &8软妹币"
@@ -59,6 +59,10 @@ gui:
       lore1: ""
       lore2: " &8&l> &7返回上级菜单"
   town-options:
+    shops:
+      name: "&b&l查看城镇商店"
+      lore1: ""
+      lore2: " &8&l> &6点击查看&7城镇里正在交易哪些东西!"
     teleport-to-town:
       name: "&b&l传送到城镇 &e{town_name}"
       lore1: " &8&l> &7点击传送到城镇"
