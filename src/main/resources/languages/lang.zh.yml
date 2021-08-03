@@ -7,7 +7,7 @@ gui:
       unavailable: "&8不可用"
       break-line: "&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-"
       lore1: "&b店主 &7: &f&l{owner}"
-      lore2: "&b城镇 &7: &f&l{town}"
+      lore2: "&b城镇 &7: &7&l{town}"
       lore3: "&b正在出售 &7: &8每 &e{amount}&8 个 &7/ &e{buy_price} &8软妹币"
       lore3-unavailable: "&b正在出售 &7: &8该商店不支持"
       lore4: "&b正在收购 &7: &8每 &e{amount} &8个 &7/ &e{sell_price} &8软妹币"
@@ -131,4 +131,3 @@ chat-message:
     board-set: "&e/ts board set <行数> <内容> &8-&b 修改一行的内容"
     board-delete: "&e/ts board delete <行数> &8-&b 删除一行内容"
     board-clear: "&e/ts board clear &8-&b 清除城镇公告板"
-
