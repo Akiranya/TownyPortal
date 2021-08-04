@@ -41,14 +41,8 @@ public class TownyPortal extends ExtendedJavaPlugin {
         // load data source from file
         townModelFileHandler = new TownModelFileHandler(new File(getDataFolder(), "data"));
         shopModelFileHandler = new ShopModelFileHandler(new File(getDataFolder(), "data"));
-        townModelDatasource = townModelFileHandler.load().orElseGet(() -> {
-            getLogger().warning("Data file does not exist, creating new instance");
-            return new TownModelDatasource();
-        });
-        shopModelDatasource = shopModelFileHandler.load().orElseGet(() -> {
-            getLogger().warning("Data file does not exist, creating new instance");
-            return new ShopModelDatasource();
-        });
+        townModelDatasource = townModelFileHandler.load().orElseGet(TownModelDatasource::new);
+        shopModelDatasource = shopModelFileHandler.load().orElseGet(ShopModelDatasource::new);
 
 
         // schedule task to save data periodically
