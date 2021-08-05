@@ -8,8 +8,7 @@ import org.bukkit.entity.Player;
 public class ShopListingGui extends SeamlessGui {
 
     public ShopListingGui(Player player) {
-        super(player, 6, TownyPortal.plugin.message(player, "gui.shop-listing.title"),
-                gui -> new ShopListingFilterView(gui, TownyPortal.plugin.getShopModelDatasource()));
+        super(player, 6, TownyPortal.plugin.message(player, "gui.shop-listing.title"), ShopListingFilterView::new);
         SoundRegistry.bindClickingSound(this);
         SoundRegistry.bindOpeningSound(this);
     }

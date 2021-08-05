@@ -2,7 +2,6 @@ package co.mcsky.townyportal.gui.shop;
 
 import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.townyportal.TownyPortal;
-import co.mcsky.townyportal.data.ShopModelDatasource;
 import me.lucko.helper.item.ItemStackBuilder;
 import me.lucko.helper.menu.scheme.MenuScheme;
 import org.bukkit.Material;
@@ -19,8 +18,8 @@ public class ShopListingFilterView extends ShopListingSimpleView {
             .maskEmpty(5)
             .mask("000001000");
 
-    public ShopListingFilterView(SeamlessGui gui, ShopModelDatasource shopModelDataSource) {
-        super(gui, shopModelDataSource);
+    public ShopListingFilterView(SeamlessGui gui) {
+        super(gui);
     }
 
     @Override

@@ -5,8 +5,6 @@ import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.moecore.skull.SkinFetchCompleteEvent;
 import co.mcsky.moecore.skull.SkullCache;
 import co.mcsky.townyportal.TownyPortal;
-import co.mcsky.townyportal.data.ShopModelDatasource;
-import co.mcsky.townyportal.data.TownModelDatasource;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
 import me.lucko.helper.Events;
@@ -29,22 +27,14 @@ public class TownListingView extends PaginatedView {
 
     // towny api instance
     private final TownyAPI towny;
-    // data source of town model data source
-    private final TownModelDatasource townModelDataSource;
-    // data source of shop model data source
-    private final ShopModelDatasource shopModelDatasource;
     // currently viewing town
     private Town chosenTown;
 
-    public TownListingView(SeamlessGui gui,
-                           TownModelDatasource townModelDataSource,
-                           ShopModelDatasource shopModelDatasource) {
+    public TownListingView(SeamlessGui gui) {
         super(gui);
 
         // constructor args
         this.gui = gui;
-        this.townModelDataSource = townModelDataSource;
-        this.shopModelDatasource = shopModelDatasource;
 
         // convenient field
         this.towny = TownyAPI.getInstance();
@@ -146,15 +136,15 @@ public class TownListingView extends PaginatedView {
                 .name(TownyPortal.plugin.message("gui.town-listing.town-entry.name", "town_name", town.getName()))
                 .lore("")
                 .lore(TownyPortal.plugin.message("gui.town-listing.town-entry.lore1", "mayor_name", town.getMayor().getName()))
-                .lore(TownyPortal.plugin.message("gui.town-listing.town-entry.lore2", "shop_num", townModelDataSource.getTownModel(town.getUUID()).getShopNum()))
+                .lore(TownyPortal.plugin.message("gui.town-listing.town-entry.lore2", "shop_num", TownyPortal.plugin.getTownModelDatasource().getTownModel(town.getUUID()).getShopNum()))
                 .lore("")
-                .lore(townModelDataSource.getTownModel(town.getUUID()).getTownBoard())
+                .lore(TownyPortal.plugin.getTownModelDatasource().getTownModel(town.getUUID()).getTownBoard())
                 .lore("")
                 .lore(TownyPortal.plugin.message("gui.town-listing.town-entry.lore3"))
                 .transform(item -> SkullCache.INSTANCE.itemWithUuid(item, town.getMayor().getUUID()))
                 .build(() -> {
                     this.chosenTown = town;
-                    this.gui.switchView(new TownOptionView(gui, this, shopModelDatasource));
+                    this.gui.switchView(new TownOptionView(gui, this));
                 });
     }
 }

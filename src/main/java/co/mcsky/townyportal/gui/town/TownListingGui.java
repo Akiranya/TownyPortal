@@ -8,8 +8,7 @@ import org.bukkit.entity.Player;
 public class TownListingGui extends SeamlessGui {
 
     public TownListingGui(Player player) {
-        super(player, 6, TownyPortal.plugin.message(player, "gui.town-listing.title"),
-                gui -> new TownListingView(gui, TownyPortal.plugin.getTownModelDatasource(), TownyPortal.plugin.getShopModelDatasource()));
+        super(player, 6, TownyPortal.plugin.message(player, "gui.town-listing.title"), TownListingView::new);
         SoundRegistry.bindClickingSound(this);
         SoundRegistry.bindOpeningSound(this);
     }

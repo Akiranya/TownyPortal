@@ -4,7 +4,6 @@ import co.mcsky.moecore.gui.GuiView;
 import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.moecore.skull.SkullCreator;
 import co.mcsky.townyportal.TownyPortal;
-import co.mcsky.townyportal.data.ShopModelDatasource;
 import co.mcsky.townyportal.gui.shop.ShopListingTownView;
 import com.google.common.collect.Lists;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -58,19 +57,14 @@ public class TownOptionView implements GuiView {
 
     // the parent view
     private final GuiView parentView;
-    // shop model data source
-    private final ShopModelDatasource shopModelDatasource;
 
     // convenient fields
     private final TownyAPI townyApi;
     private final Town chosenTown;
 
-    public TownOptionView(SeamlessGui gui,
-                          TownListingView townListingView,
-                          ShopModelDatasource shopModelDatasource) {
+    public TownOptionView(SeamlessGui gui, TownListingView townListingView) {
         this.gui = gui;
         this.parentView = townListingView;
-        this.shopModelDatasource = shopModelDatasource;
 
         // convenient fields
         this.townyApi = TownyAPI.getInstance();
@@ -91,7 +85,7 @@ public class TownOptionView implements GuiView {
                 .name(TownyPortal.plugin.message("gui.town-options.shops.name"))
                 .lore(TownyPortal.plugin.message("gui.town-options.shops.lore1"))
                 .lore(TownyPortal.plugin.message("gui.town-options.shops.lore2"))
-                .build(() -> gui.switchView(new ShopListingTownView(this, gui, shopModelDatasource, chosenTown.getUUID()))));
+                .build(() -> gui.switchView(new ShopListingTownView(this, gui, chosenTown.getUUID()))));
         // teleport to the town
         leftOptionPopulator.accept(ItemStackBuilder.of(Material.MINECART)
                 .name(TownyPortal.plugin.message("gui.town-options.teleport-to-town.name", "town_name", chosenTown.getName()))

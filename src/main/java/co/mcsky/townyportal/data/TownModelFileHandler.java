@@ -22,7 +22,6 @@ public class TownModelFileHandler extends FileStorageHandler<TownModelDatasource
 
     public TownModelFileHandler(File dataFolder) {
         super(fileName, fileExt, dataFolder);
-
         TypeSerializerCollection serializers = YamlConfigFactory.typeSerializers().childBuilder()
                 .register(TownModel.class, new TownModelSerializer())
                 .register(TownModelDatasource.class, new TownModelDatasourceSerializer())

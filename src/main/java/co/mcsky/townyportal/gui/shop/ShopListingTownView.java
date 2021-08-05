@@ -3,7 +3,6 @@ package co.mcsky.townyportal.gui.shop;
 import co.mcsky.moecore.gui.GuiView;
 import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.townyportal.TownyPortal;
-import co.mcsky.townyportal.data.ShopModelDatasource;
 import me.lucko.helper.item.ItemStackBuilder;
 import me.lucko.helper.menu.scheme.MenuScheme;
 import org.bukkit.Material;
@@ -17,8 +16,8 @@ public class ShopListingTownView extends ShopListingSimpleView {
             .mask("000010000");
     private final GuiView parentView;
 
-    public ShopListingTownView(GuiView parentView, SeamlessGui gui, ShopModelDatasource shopModelDataSource, UUID townUuid) {
-        super(gui, shopModelDataSource);
+    public ShopListingTownView(GuiView parentView, SeamlessGui gui, UUID townUuid) {
+        super(gui);
         this.parentView = parentView;
         this.updateContent(s -> s.getTown().getUUID().equals(townUuid));
     }

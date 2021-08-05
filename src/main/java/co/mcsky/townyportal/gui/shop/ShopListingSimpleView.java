@@ -4,7 +4,6 @@ import co.mcsky.moecore.gui.PaginatedView;
 import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.data.ShopModel;
-import co.mcsky.townyportal.data.ShopModelDatasource;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.paperlib.PaperLib;
 import me.lucko.helper.item.ItemStackBuilder;
@@ -23,13 +22,10 @@ public abstract class ShopListingSimpleView extends PaginatedView {
 
     // the backed GUI
     protected final SeamlessGui gui;
-    // data source of shop models
-    protected final ShopModelDatasource shopModelDataSource;
 
-    public ShopListingSimpleView(SeamlessGui gui, ShopModelDatasource shopModelDataSource) {
+    public ShopListingSimpleView(SeamlessGui gui) {
         super(gui);
         this.gui = gui;
-        this.shopModelDataSource = shopModelDataSource;
 
         // update content upon this view creation
         updateContent(ShopFilters.ALL());
@@ -37,7 +33,7 @@ public abstract class ShopListingSimpleView extends PaginatedView {
 
     public void updateContent(Predicate<ShopModel> filter) {
         // TODO add cache for shop icons
-        List<Item> content = shopModelDataSource.getShopList().stream().filter(filter).map(this::shopIcon).toList();
+        List<Item> content = TownyPortal.plugin.getShopModelDatasource().getShopList().stream().filter(filter).map(this::shopIcon).toList();
         updateContent(content);
     }
 
