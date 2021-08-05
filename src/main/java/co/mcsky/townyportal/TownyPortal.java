@@ -46,14 +46,14 @@ public class TownyPortal extends ExtendedJavaPlugin {
 
         // schedule task to save data periodically
         Schedulers.async().runRepeating(() -> {
-            townModelFileHandler.save(townModelDatasource);
-            shopModelFileHandler.save(shopModelDatasource);
+            townModelFileHandler.save(getTownModelDatasource());
+            shopModelFileHandler.save(getShopModelDatasource());
             getLogger().info("Datasource saved successfully!");
         }, 5, TimeUnit.SECONDS, this.config.save_interval, TimeUnit.SECONDS).bindWith(this);
 
         // register listeners
-        bindModule(new TownListener(townModelDatasource));
-        bindModule(new ShopListener(townModelDatasource, shopModelDatasource));
+        bindModule(new TownListener());
+        bindModule(new ShopListener());
 
     }
 

@@ -2,7 +2,6 @@ package co.mcsky.townyportal.listener;
 
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.data.TownModel;
-import co.mcsky.townyportal.data.TownModelDatasource;
 import com.palmergames.bukkit.towny.event.DeleteTownEvent;
 import com.palmergames.bukkit.towny.event.NewTownEvent;
 import com.palmergames.bukkit.towny.object.Town;
@@ -13,10 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class TownListener implements TerminableModule {
 
-    private final TownModelDatasource townModelDatasource;
-
-    public TownListener(TownModelDatasource townModelDatasource) {
-        this.townModelDatasource = townModelDatasource;
+    public TownListener() {
     }
 
     @Override
@@ -27,13 +23,13 @@ public class TownListener implements TerminableModule {
             if (TownyPortal.plugin.isDebugMode()) {
                 TownyPortal.plugin.getLogger().info("New town %s created, adding town model to data source".formatted(e.getTown().getName()));
             }
-            townModelDatasource.addTownModel(new TownModel(e.getTown().getUUID()));
+            TownyPortal.plugin.getTownModelDatasource().addTownModel(new TownModel(e.getTown().getUUID()));
         }).bindWith(consumer);
         Events.subscribe(DeleteTownEvent.class).handler(e -> {
             if (TownyPortal.plugin.isDebugMode()) {
                 TownyPortal.plugin.getLogger().info("Town %s deleted, removing town model from data source".formatted(e.getTownName()));
             }
-            townModelDatasource.removeTownModel(e.getTownUUID());
+            TownyPortal.plugin.getTownModelDatasource().removeTownModel(e.getTownUUID());
         }).bindWith(consumer);
 
         // handle towny's bug: default public setting doesn't work

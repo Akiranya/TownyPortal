@@ -3,9 +3,7 @@ package co.mcsky.townyportal.listener;
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.TownyUtils;
 import co.mcsky.townyportal.data.ShopModel;
-import co.mcsky.townyportal.data.ShopModelDatasource;
 import co.mcsky.townyportal.data.TownModel;
-import co.mcsky.townyportal.data.TownModelDatasource;
 import com.Acrobot.ChestShop.Events.Protection.BuildPermissionEvent;
 import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
 import com.Acrobot.ChestShop.Events.ShopDestroyedEvent;
@@ -21,13 +19,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ShopListener implements TerminableModule {
 
-    private final TownModelDatasource townModelDatasource;
-    private final ShopModelDatasource shopModelDatasource;
     private final TownyAPI townyAPI;
 
-    public ShopListener(TownModelDatasource townModelDatasource, ShopModelDatasource shopModelDatasource) {
-        this.townModelDatasource = townModelDatasource;
-        this.shopModelDatasource = shopModelDatasource;
+    public ShopListener() {
         this.townyAPI = TownyAPI.getInstance();
     }
 
@@ -61,7 +55,7 @@ public class ShopListener implements TerminableModule {
             // increment shop num
             if (TownyPortal.plugin.isDebugMode())
                 TownyPortal.plugin.getLogger().info("Town %s's shop num increment".formatted(town.getName()));
-            TownModel townModel = townModelDatasource.getTownModel(town.getUUID());
+            TownModel townModel = TownyPortal.plugin.getTownModelDatasource().getTownModel(town.getUUID());
             townModel.incrementShopNum();
         }).bindWith(consumer);
 
@@ -77,7 +71,7 @@ public class ShopListener implements TerminableModule {
             // decrement shop num
             if (TownyPortal.plugin.isDebugMode())
                 TownyPortal.plugin.getLogger().info("Town %s's shop num decrement".formatted(town.getName()));
-            TownModel townModel = townModelDatasource.getTownModel(town.getUUID());
+            TownModel townModel = TownyPortal.plugin.getTownModelDatasource().getTownModel(town.getUUID());
             townModel.decrementShopNum();
         }).bindWith(consumer);
 
@@ -97,7 +91,7 @@ public class ShopListener implements TerminableModule {
                     }
 
                     final ShopModel shopModel = new ShopModel(town.getUUID(), e.getPlayer().getUniqueId(), e.getPlayer().getName(), e.getSignLines(), sign.getLocation());
-                    shopModelDatasource.addShopModel(shopModel);
+                    TownyPortal.plugin.getShopModelDatasource().addShopModel(shopModel);
                     if (TownyPortal.plugin.isDebugMode()) {
                         TownyPortal.plugin.getLogger().info("Added shop model to datasource successfully");
                     }
@@ -109,7 +103,7 @@ public class ShopListener implements TerminableModule {
                 .handler(e -> {
                     final Sign sign = e.getSign();
                     final Location signLocation = sign.getBlock().getLocation();
-                    shopModelDatasource.removeShopModel(signLocation);
+                    TownyPortal.plugin.getShopModelDatasource().removeShopModel(signLocation);
                     if (TownyPortal.plugin.isDebugMode()) {
                         TownyPortal.plugin.getLogger().info("Removed shop model from datasource");
                     }
