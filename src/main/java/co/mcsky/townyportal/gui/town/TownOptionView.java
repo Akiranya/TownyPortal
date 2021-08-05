@@ -1,10 +1,11 @@
-package co.mcsky.townyportal.gui;
+package co.mcsky.townyportal.gui.town;
 
+import co.mcsky.moecore.gui.GuiView;
+import co.mcsky.moecore.gui.SeamlessGui;
+import co.mcsky.moecore.skull.SkullCreator;
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.data.ShopModelDatasource;
-import co.mcsky.townyportal.gui.base.GuiView;
-import co.mcsky.townyportal.gui.base.SeamlessGui;
-import co.mcsky.townyportal.skull.SkullCreator;
+import co.mcsky.townyportal.gui.shop.ShopListingTownView;
 import com.google.common.collect.Lists;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;

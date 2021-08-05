@@ -1,8 +1,8 @@
-package co.mcsky.townyportal.gui;
+package co.mcsky.townyportal.gui.shop;
 
+import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.data.ShopModelDatasource;
-import co.mcsky.townyportal.gui.base.SeamlessGui;
 import me.lucko.helper.item.ItemStackBuilder;
 import me.lucko.helper.menu.scheme.MenuScheme;
 import org.bukkit.Material;

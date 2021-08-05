@@ -1,6 +1,6 @@
 package co.mcsky.townyportal;
 
-import co.mcsky.townyportal.config.YamlConfigFactory;
+import co.mcsky.moecore.config.YamlConfigFactory;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
@@ -39,24 +39,12 @@ public class TownyPortalConfig {
 
         /* initialize config nodes */
 
-        debug = root.node("debug")
-                .comment("Generate more output to console")
-                .getBoolean(false);
-        save_interval = root.node("save-interval")
-                .comment("How often to save data into file")
-                .getInt(1800);
-        town_board_max_line = root.node("town-board-max-line")
-                .comment("The max number of lines allowed in town board command")
-                .getInt(4);
-        shop_must_inside_plots = root.node("shop-must-inside-plots")
-                .comment("Should people only be able to build shops inside plots?")
-                .getBoolean(true);
-        shop_must_inside_shop_plots = root.node("shop-must-inside-shop-plots")
-                .comment("Should people only be able to build shops inside commercial plots?")
-                .getBoolean(true);
-        resident_name_num_per_line = root.node("resident-num-per-line")
-                .comment("The number of resident names per line in the GUI")
-                .getInt(4);
+        debug = root.node("debug").getBoolean(false);
+        save_interval = root.node("save-interval").getInt(1800);
+        town_board_max_line = root.node("town-board-max-line").getInt(4);
+        shop_must_inside_plots = root.node("shop-must-inside-plots").getBoolean(true);
+        shop_must_inside_shop_plots = root.node("shop-must-inside-shop-plots").getBoolean(true);
+        resident_name_num_per_line = root.node("resident-num-per-line").getInt(4);
     }
 
     public void save() {

@@ -5,8 +5,8 @@ import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.annotation.*;
 import co.mcsky.townyportal.data.TownModel;
-import co.mcsky.townyportal.gui.ShopListingGui;
-import co.mcsky.townyportal.gui.TownListingGui;
+import co.mcsky.townyportal.gui.shop.ShopListingGui;
+import co.mcsky.townyportal.gui.town.TownListingGui;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -56,6 +56,7 @@ public class TownyPortalCommands extends BaseCommand {
     }
 
     @Default
+    @Subcommand("towns")
     public void openTownGui(Player player) {
         new TownListingGui(player).open();
     }
@@ -65,23 +66,29 @@ public class TownyPortalCommands extends BaseCommand {
         new ShopListingGui(player).open();
     }
 
-    @Subcommand("reload")
+    @Subcommand("reloadconfig")
     @CommandPermission("townyportal.admin")
-    class ReloadCommand extends BaseCommand {
+    public void reloadConfig(CommandSender sender) {
+        plugin.loadLanguages();
+        plugin.config.load();
+        sender.sendMessage(plugin.getMessage(sender, "chat-message.plugin-config-reloaded"));
+    }
 
-        @Subcommand("config")
-        public void reloadConfig(CommandSender sender) {
-            plugin.loadLanguages();
-            plugin.config.load();
-            sender.sendMessage(plugin.getMessage(sender, "chat-message.plugin-config-reloaded"));
+    @Subcommand("datasource")
+    @CommandPermission("townyportal.admin")
+    class DatasourceCommand extends BaseCommand {
+
+        @Subcommand("load")
+        public void load(CommandSender sender) {
+            plugin.loadDataSource();
+            sender.sendMessage(plugin.getMessage(sender, "chat-message.plugin-datasource-loaded"));
         }
 
-        @Subcommand("datasource")
-        public void reloadDatasource(CommandSender sender) {
-            plugin.reloadDataSource();
-            sender.sendMessage(plugin.getMessage(sender, "chat-message.plugin-datasource-reloaded"));
+        @Subcommand("save")
+        public void save(CommandSender sender) {
+            plugin.saveDataSource();
+            sender.sendMessage(plugin.getMessage(sender, "chat-message.plugin-datasource-saved"));
         }
-
     }
 
     @SuppressWarnings("ConstantConditions")

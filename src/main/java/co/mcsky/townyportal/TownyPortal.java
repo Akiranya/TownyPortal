@@ -44,11 +44,10 @@ public class TownyPortal extends ExtendedJavaPlugin {
         townModelDatasource = townModelFileHandler.load().orElseGet(TownModelDatasource::new);
         shopModelDatasource = shopModelFileHandler.load().orElseGet(ShopModelDatasource::new);
 
-
         // schedule task to save data periodically
         Schedulers.async().runRepeating(() -> {
-            townModelFileHandler.saveAndBackup(townModelDatasource);
-            shopModelFileHandler.saveAndBackup(shopModelDatasource);
+            townModelFileHandler.save(townModelDatasource);
+            shopModelFileHandler.save(shopModelDatasource);
             getLogger().info("Datasource saved successfully!");
         }, 5, TimeUnit.SECONDS, this.config.save_interval, TimeUnit.SECONDS).bindWith(this);
 
@@ -60,22 +59,12 @@ public class TownyPortal extends ExtendedJavaPlugin {
 
     @Override
     protected void disable() {
-        // save data source into file
-        townModelFileHandler.save(townModelDatasource);
-        shopModelFileHandler.save(shopModelDatasource);
+        saveDataSource();
     }
 
     public void reloadConfig() {
         plugin.loadLanguages();
         plugin.config.load();
-    }
-
-    /**
-     * Reloads the data source. CAUTION: This will overwrite all the data in the memory!
-     */
-    public void reloadDataSource() {
-        townModelDatasource = townModelFileHandler.load().orElse(new TownModelDatasource());
-        shopModelDatasource = shopModelFileHandler.load().orElse(new ShopModelDatasource());
     }
 
     public void registerCommands() {
@@ -121,5 +110,22 @@ public class TownyPortal extends ExtendedJavaPlugin {
 
     public boolean isDebugMode() {
         return config.debug;
+    }
+
+    /**
+     * Loads the data source from file.
+     * <p>
+     * CAUTION: This will overwrite all the data in the memory!
+     */
+    public void loadDataSource() {
+        // TODO async IO
+        townModelDatasource = townModelFileHandler.load().orElseGet(TownModelDatasource::new);
+        shopModelDatasource = shopModelFileHandler.load().orElseGet(ShopModelDatasource::new);
+    }
+
+    public void saveDataSource() {
+        // TODO async IO
+        townModelFileHandler.saveAndBackup(townModelDatasource);
+        shopModelFileHandler.saveAndBackup(shopModelDatasource);
     }
 }

@@ -1,12 +1,13 @@
 package co.mcsky.townyportal.data;
 
-import co.mcsky.townyportal.config.YamlConfigFactory;
+import co.mcsky.moecore.config.YamlConfigFactory;
 import co.mcsky.townyportal.serializer.TownModelDatasourceSerializer;
 import co.mcsky.townyportal.serializer.TownModelSerializer;
 import me.lucko.helper.serialize.FileStorageHandler;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
+import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
@@ -22,22 +23,22 @@ public class TownModelFileHandler extends FileStorageHandler<TownModelDatasource
     public TownModelFileHandler(File dataFolder) {
         super(fileName, fileExt, dataFolder);
 
-        TypeSerializerCollection serializers = TypeSerializerCollection.defaults().childBuilder()
+        TypeSerializerCollection serializers = YamlConfigFactory.typeSerializers().childBuilder()
                 .register(TownModel.class, new TownModelSerializer())
                 .register(TownModelDatasource.class, new TownModelDatasourceSerializer())
                 .build();
-        loader = YamlConfigFactory.loader(new File(dataFolder, fileName + fileExt));
-        try {
-            root = loader.load(loader.defaultOptions().serializers(serializers));
-        } catch (ConfigurateException e) {
-            e.printStackTrace();
-        }
+        loader = YamlConfigurationLoader.builder()
+                .file(new File(dataFolder, fileName + fileExt))
+                .defaultOptions(opt -> opt.serializers(serializers))
+                .nodeStyle(NodeStyle.BLOCK)
+                .indent(2)
+                .build();
     }
 
     @Override
     protected TownModelDatasource readFromFile(Path path) {
         try {
-            return root.get(TownModelDatasource.class);
+            return (root = loader.load()).get(TownModelDatasource.class);
         } catch (ConfigurateException e) {
             e.printStackTrace();
             return null;

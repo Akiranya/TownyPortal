@@ -116,8 +116,9 @@ gui:
       lore1: ""
       lore2: " &8&l> &7返回上级菜单"
 chat-message:
+  plugin-datasource-loaded: "&6数据已从文件中读取!"
+  plugin-datasource-saved: "&6数据已保存到文件!"
   plugin-config-reloaded: "&6TownyPortal 的配置和语言文件已重载."
-  plugin-datasource-reloaded: "&6TownyPortal 的数据文件已重载."
   say-to-join-town: "#FF99CC有没有城镇收下我这只可爱的萌新呀?"
   only-mayor-can-use: "&c你不是镇长...只有城镇的镇长可以修改城镇公告板."
   town-board-view-title: "&80o.----------- &e&l城镇公告板&8 -----------.o0"

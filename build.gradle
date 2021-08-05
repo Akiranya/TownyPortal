@@ -67,6 +67,10 @@ dependencies {
 
     compileOnly('com.github.TownyAdvanced:Towny:0.97.0.11')
     compileOnly('com.acrobot.chestshop:chestshop:3.12')
+
+    // moecore
+    compileOnly('com.github.Akiranya:MoeCore:0.2')
+
 }
 
 test {

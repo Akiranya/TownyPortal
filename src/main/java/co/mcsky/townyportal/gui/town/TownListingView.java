@@ -1,12 +1,12 @@
-package co.mcsky.townyportal.gui;
+package co.mcsky.townyportal.gui.town;
 
+import co.mcsky.moecore.gui.PaginatedView;
+import co.mcsky.moecore.gui.SeamlessGui;
+import co.mcsky.moecore.skull.SkinFetchCompleteEvent;
+import co.mcsky.moecore.skull.SkullCache;
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.data.ShopModelDatasource;
 import co.mcsky.townyportal.data.TownModelDatasource;
-import co.mcsky.townyportal.gui.base.PaginatedView;
-import co.mcsky.townyportal.gui.base.SeamlessGui;
-import co.mcsky.townyportal.skull.SkinFetchCompleteEvent;
-import co.mcsky.townyportal.skull.SkullCache;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
 import me.lucko.helper.Events;

@@ -1,10 +1,10 @@
-package co.mcsky.townyportal.gui;
+package co.mcsky.townyportal.gui.shop;
 
+import co.mcsky.moecore.gui.PaginatedView;
+import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.data.ShopModel;
 import co.mcsky.townyportal.data.ShopModelDatasource;
-import co.mcsky.townyportal.gui.base.PaginatedView;
-import co.mcsky.townyportal.gui.base.SeamlessGui;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.paperlib.PaperLib;
 import me.lucko.helper.item.ItemStackBuilder;

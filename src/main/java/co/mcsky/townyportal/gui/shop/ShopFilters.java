@@ -1,4 +1,4 @@
-package co.mcsky.townyportal.gui;
+package co.mcsky.townyportal.gui.shop;
 
 import co.mcsky.townyportal.data.ShopModel;
 import me.lucko.helper.function.Predicates;

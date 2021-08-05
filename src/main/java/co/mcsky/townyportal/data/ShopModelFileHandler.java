@@ -1,14 +1,13 @@
 package co.mcsky.townyportal.data;
 
-import co.mcsky.townyportal.config.YamlConfigFactory;
-import co.mcsky.townyportal.serializer.LocationSerializer;
+import co.mcsky.moecore.config.YamlConfigFactory;
 import co.mcsky.townyportal.serializer.ShopModelDatasourceSerializer;
 import co.mcsky.townyportal.serializer.ShopModelSerializer;
 import me.lucko.helper.serialize.FileStorageHandler;
-import org.bukkit.Location;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
+import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
@@ -23,23 +22,22 @@ public class ShopModelFileHandler extends FileStorageHandler<ShopModelDatasource
 
     public ShopModelFileHandler(File dataFolder) {
         super(fileName, fileExt, dataFolder);
-        TypeSerializerCollection serializers = TypeSerializerCollection.defaults().childBuilder()
-                .register(Location.class, new LocationSerializer())
+        TypeSerializerCollection serializers = YamlConfigFactory.typeSerializers().childBuilder()
                 .register(ShopModel.class, new ShopModelSerializer())
                 .register(ShopModelDatasource.class, new ShopModelDatasourceSerializer())
                 .build();
-        loader = YamlConfigFactory.loader(new File(dataFolder, fileName + fileExt));
-        try {
-            root = loader.load(loader.defaultOptions().serializers(serializers));
-        } catch (ConfigurateException e) {
-            e.printStackTrace();
-        }
+        loader = YamlConfigurationLoader.builder()
+                .file(new File(dataFolder, fileName + fileExt))
+                .defaultOptions(opt -> opt.serializers(serializers))
+                .nodeStyle(NodeStyle.BLOCK)
+                .indent(2)
+                .build();
     }
 
     @Override
     protected ShopModelDatasource readFromFile(Path path) {
         try {
-            return root.get(ShopModelDatasource.class); // use root to get the node. don't use loader!
+            return (root = loader.load()).get(ShopModelDatasource.class); // use root to get the node. don't use loader!
         } catch (ConfigurateException e) {
             e.printStackTrace();
             return null;
@@ -47,9 +45,9 @@ public class ShopModelFileHandler extends FileStorageHandler<ShopModelDatasource
     }
 
     @Override
-    protected void saveToFile(Path path, ShopModelDatasource shopModelDataSource) {
+    protected void saveToFile(Path path, ShopModelDatasource shopModelDatasource) {
         try {
-            loader.save(root.set(shopModelDataSource));
+            loader.save(root.set(shopModelDatasource));
         } catch (ConfigurateException e) {
             e.printStackTrace();
         }

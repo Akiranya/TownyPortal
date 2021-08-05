@@ -1,8 +1,7 @@
 name: TownyPortal
 main: co.mcsky.townyportal.TownyPortal
 version: ${version}
-api-version: 1.13
+api-version: 1.17
 author: Nailm
-prefix: TownyPortal
 website: https://mimaru.me
-depend: [ MoeLibrary, helper, Towny, ChestShop ]
+depend: [ MoeCore, helper, Towny, ChestShop ]

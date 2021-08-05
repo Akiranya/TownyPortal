@@ -31,7 +31,6 @@ public class TownModelDatasourceSerializer implements TypeSerializer<TownModelDa
     public void serialize(Type type, @Nullable TownModelDatasource townModelDatasource, ConfigurationNode node) throws
             SerializationException {
         Preconditions.checkNotNull(townModelDatasource);
-        node.node("version").set(1);
         node.node("towns").setList(TownModel.class, townModelDatasource.getTownModels());
     }
 

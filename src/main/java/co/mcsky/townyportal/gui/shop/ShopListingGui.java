@@ -1,8 +1,8 @@
-package co.mcsky.townyportal.gui;
+package co.mcsky.townyportal.gui.shop;
 
+import co.mcsky.moecore.gui.SeamlessGui;
+import co.mcsky.moecore.gui.SoundRegistry;
 import co.mcsky.townyportal.TownyPortal;
-import co.mcsky.townyportal.gui.base.SeamlessGui;
-import co.mcsky.townyportal.gui.base.SoundRegistry;
 import org.bukkit.entity.Player;
 
 public class ShopListingGui extends SeamlessGui {
