@@ -36,6 +36,7 @@ public abstract class ShopListingSimpleView extends PaginatedView {
     }
 
     public void updateContent(Predicate<ShopModel> filter) {
+        // TODO add cache for shop icons
         List<Item> content = shopModelDataSource.getShopList().stream().filter(filter).map(this::shopIcon).toList();
         updateContent(content);
     }
@@ -43,19 +44,19 @@ public abstract class ShopListingSimpleView extends PaginatedView {
     private Item shopIcon(ShopModel s) {
         int shopQuantity = s.getQuantity();
         String buyPrice = s.hasBuyPrice()
-                ? TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore3", "amount", shopQuantity, "buy_price", s.getBuyPrice())
-                : TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore3-unavailable");
+                ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3", "amount", shopQuantity, "buy_price", s.getBuyPrice())
+                : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3-unavailable");
         String sellPrice = s.hasSellPrice()
-                ? TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore4", "amount", shopQuantity, "sell_price", s.getSellPrice())
-                : TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore4-unavailable");
+                ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4", "amount", shopQuantity, "sell_price", s.getSellPrice())
+                : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4-unavailable");
         return ItemStackBuilder.of(s.getItem())
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.break-line"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore1", "owner", s.ownerName()))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore2", "town", s.getTown().getName()))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore1", "owner", s.ownerName()))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore2", "town", s.getTown().getName()))
                 .lore(buyPrice) // buy price
                 .lore(sellPrice) // sell price
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.break-line"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.shop-icon.lore5")) // click to teleport
+                .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore5")) // click to teleport
                 .build(() -> {
                     try {
                         PaperLib.teleportAsync(gui.getPlayer(), s.getTown().getSpawn());
@@ -92,18 +93,18 @@ public abstract class ShopListingSimpleView extends PaginatedView {
     @Override
     public Function<PageInfo, ItemStack> nextPageItem() {
         return pageInfo -> ItemStackBuilder.of(Material.PAPER)
-                .name(TownyPortal.plugin.getMessage("gui.shop-listing.next-page.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.next-page.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.next-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
+                .name(TownyPortal.plugin.message("gui.shop-listing.next-page.name"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.next-page.lore1"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.next-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
                 .build();
     }
 
     @Override
     public Function<PageInfo, ItemStack> previousPageItem() {
         return pageInfo -> ItemStackBuilder.of(Material.PAPER)
-                .name(TownyPortal.plugin.getMessage("gui.shop-listing.previous-page.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.previous-page.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.previous-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
+                .name(TownyPortal.plugin.message("gui.shop-listing.previous-page.name"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.previous-page.lore1"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.previous-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
                 .build();
     }
 

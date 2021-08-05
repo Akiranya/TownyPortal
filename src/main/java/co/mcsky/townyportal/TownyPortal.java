@@ -20,7 +20,8 @@ public class TownyPortal extends ExtendedJavaPlugin {
 
     public static TownyPortal plugin;
     public TownyPortalConfig config;
-    public LanguageManager lang;
+
+    private LanguageManager lang;
 
     private TownModelFileHandler townModelFileHandler;
     private ShopModelFileHandler shopModelFileHandler;
@@ -59,10 +60,10 @@ public class TownyPortal extends ExtendedJavaPlugin {
 
     @Override
     protected void disable() {
-        saveDataSource();
+        saveDatasource();
     }
 
-    public void reloadConfig() {
+    public void reload() {
         plugin.loadLanguages();
         plugin.config.load();
     }
@@ -84,7 +85,7 @@ public class TownyPortal extends ExtendedJavaPlugin {
         });
     }
 
-    public String getMessage(CommandSender sender, String key, Object... replacements) {
+    public String message(CommandSender sender, String key, Object... replacements) {
         if (replacements.length == 0) {
             return lang.getConfig(sender).get(key);
         } else {
@@ -96,8 +97,8 @@ public class TownyPortal extends ExtendedJavaPlugin {
         }
     }
 
-    public String getMessage(String key, Object... replacements) {
-        return getMessage(plugin.getServer().getConsoleSender(), key, replacements);
+    public String message(String key, Object... replacements) {
+        return message(plugin.getServer().getConsoleSender(), key, replacements);
     }
 
     public TownModelDatasource getTownModelDatasource() {
@@ -117,13 +118,13 @@ public class TownyPortal extends ExtendedJavaPlugin {
      * <p>
      * CAUTION: This will overwrite all the data in the memory!
      */
-    public void loadDataSource() {
+    public void loadDatasource() {
         // TODO async IO
         townModelDatasource = townModelFileHandler.load().orElseGet(TownModelDatasource::new);
         shopModelDatasource = shopModelFileHandler.load().orElseGet(ShopModelDatasource::new);
     }
 
-    public void saveDataSource() {
+    public void saveDatasource() {
         // TODO async IO
         townModelFileHandler.saveAndBackup(townModelDatasource);
         shopModelFileHandler.saveAndBackup(shopModelDatasource);

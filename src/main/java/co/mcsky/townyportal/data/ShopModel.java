@@ -19,7 +19,7 @@ public record ShopModel(UUID townUuid,
                         Location location) {
 
     public int getQuantity() {
-        return QuantityUtil.parseQuantity(lines[(short) ChestShopSign.QUANTITY_LINE]);
+        return QuantityUtil.parseQuantity(lines[ChestShopSign.QUANTITY_LINE]);
     }
 
     public boolean hasBuyPrice() {

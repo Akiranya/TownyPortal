@@ -62,11 +62,11 @@ public class TownListingView extends PaginatedView {
     public void renderSubview() {
         // place the poster
         this.POSTER.newPopulator(this.gui).accept(ItemStackBuilder.of(Material.NETHER_STAR)
-                .name(TownyPortal.plugin.getMessage("gui.town-listing.menu-tips.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.menu-tips.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.menu-tips.lore2"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.menu-tips.lore3"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.menu-tips.lore4"))
+                .name(TownyPortal.plugin.message("gui.town-listing.menu-tips.name"))
+                .lore(TownyPortal.plugin.message("gui.town-listing.menu-tips.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-listing.menu-tips.lore2"))
+                .lore(TownyPortal.plugin.message("gui.town-listing.menu-tips.lore3"))
+                .lore(TownyPortal.plugin.message("gui.town-listing.menu-tips.lore4"))
                 .buildItem().build());
     }
 
@@ -106,18 +106,18 @@ public class TownListingView extends PaginatedView {
     @Override
     public Function<PageInfo, ItemStack> nextPageItem() {
         return pageInfo -> ItemStackBuilder.of(Material.PAPER)
-                .name(TownyPortal.plugin.getMessage("gui.town-listing.next-page.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.next-page.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.next-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
+                .name(TownyPortal.plugin.message("gui.town-listing.next-page.name"))
+                .lore(TownyPortal.plugin.message("gui.town-listing.next-page.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-listing.next-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
                 .build();
     }
 
     @Override
     public Function<PageInfo, ItemStack> previousPageItem() {
         return pageInfo -> ItemStackBuilder.of(Material.PAPER)
-                .name(TownyPortal.plugin.getMessage("gui.town-listing.previous-page.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.previous-page.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.previous-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
+                .name(TownyPortal.plugin.message("gui.town-listing.previous-page.name"))
+                .lore(TownyPortal.plugin.message("gui.town-listing.previous-page.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-listing.previous-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
                 .build();
     }
 
@@ -143,14 +143,14 @@ public class TownListingView extends PaginatedView {
 
     private Item townIcon(Town town) {
         return ItemStackBuilder.of(Material.PLAYER_HEAD)
-                .name(TownyPortal.plugin.getMessage("gui.town-listing.town-entry.name", "town_name", town.getName()))
+                .name(TownyPortal.plugin.message("gui.town-listing.town-entry.name", "town_name", town.getName()))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.town-entry.lore1", "mayor_name", town.getMayor().getName()))
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.town-entry.lore2", "shop_num", townModelDataSource.getTownModel(town.getUUID()).getShopNum()))
+                .lore(TownyPortal.plugin.message("gui.town-listing.town-entry.lore1", "mayor_name", town.getMayor().getName()))
+                .lore(TownyPortal.plugin.message("gui.town-listing.town-entry.lore2", "shop_num", townModelDataSource.getTownModel(town.getUUID()).getShopNum()))
                 .lore("")
                 .lore(townModelDataSource.getTownModel(town.getUUID()).getTownBoard())
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-listing.town-entry.lore3"))
+                .lore(TownyPortal.plugin.message("gui.town-listing.town-entry.lore3"))
                 .transform(item -> SkullCache.INSTANCE.itemWithUuid(item, town.getMayor().getUUID()))
                 .build(() -> {
                     this.chosenTown = town;

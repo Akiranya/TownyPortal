@@ -88,15 +88,15 @@ public class TownOptionView implements GuiView {
 
         // check out shops
         leftOptionPopulator.accept(ItemStackBuilder.of(Material.GOLD_INGOT)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.shops.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.shops.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.shops.lore2"))
+                .name(TownyPortal.plugin.message("gui.town-options.shops.name"))
+                .lore(TownyPortal.plugin.message("gui.town-options.shops.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.shops.lore2"))
                 .build(() -> gui.switchView(new ShopListingTownView(this, gui, shopModelDatasource, chosenTown.getUUID()))));
         // teleport to the town
         leftOptionPopulator.accept(ItemStackBuilder.of(Material.MINECART)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.teleport-to-town.name", "town_name", chosenTown.getName()))
+                .name(TownyPortal.plugin.message("gui.town-options.teleport-to-town.name", "town_name", chosenTown.getName()))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.teleport-to-town.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.teleport-to-town.lore1"))
                 .build(() -> {
                     try {
                         PaperLib.teleportAsync(player, chosenTown.getSpawn());
@@ -106,12 +106,12 @@ public class TownOptionView implements GuiView {
                 }));
         // join the town
         leftOptionPopulator.accept(ItemStackBuilder.of(Material.PAPER)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.join-town.name", "town_name", chosenTown.getName()))
+                .name(TownyPortal.plugin.message("gui.town-options.join-town.name", "town_name", chosenTown.getName()))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.join-town.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.join-town.lore2"))
+                .lore(TownyPortal.plugin.message("gui.town-options.join-town.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.join-town.lore2"))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.join-town.lore3"))
+                .lore(TownyPortal.plugin.message("gui.town-options.join-town.lore3"))
                 .build(() -> {
                     Resident resident = townyApi.getResident(player.getUniqueId());
                     try {
@@ -119,7 +119,7 @@ public class TownOptionView implements GuiView {
                         if (chosenTown.isOpen() && resident != null) {
                             resident.setTown(chosenTown);
                         } else {
-                            player.chat(TownyPortal.plugin.getMessage("chat-message.say-to-join-town"));
+                            player.chat(TownyPortal.plugin.message("chat-message.say-to-join-town"));
                         }
                     } catch (AlreadyRegisteredException e) {
                         player.sendMessage(e.getMessage());
@@ -130,20 +130,20 @@ public class TownOptionView implements GuiView {
 
         // place right option: town level
         rightOptionPopulator.accept(ItemStackBuilder.of(Material.EMERALD)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.town-level.name", "prefix", chosenTown.getPrefix(), "postfix", chosenTown.getPostfix()))
+                .name(TownyPortal.plugin.message("gui.town-options.town-level.name", "prefix", chosenTown.getPrefix(), "postfix", chosenTown.getPostfix()))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-level.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-level.lore1"))
                 .buildItem().build());
 
         // place right option: town resident list
         List<String> strings = chosenTown.getResidents().stream().map(TownyObject::getName).toList();
         List<List<String>> partitions = Lists.partition(strings, TownyPortal.plugin.config.resident_name_num_per_line);
         ItemStackBuilder item = ItemStackBuilder.of(Material.PLAYER_HEAD)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.town-resident.name", "resident_num", chosenTown.getNumResidents()))
+                .name(TownyPortal.plugin.message("gui.town-options.town-resident.name", "resident_num", chosenTown.getNumResidents()))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-resident.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-resident.lore1"))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-resident.lore2"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-resident.lore2"))
                 .transform(i -> SkullCreator.itemWithBase64(i, skin));
         for (List<String> partition : partitions)
             item.lore(ChatColor.GRAY + partition.stream().reduce(((s1, s2) -> s1 + ", " + s2)).orElse(""));
@@ -151,66 +151,66 @@ public class TownOptionView implements GuiView {
 
         // place right option: town plots
         rightOptionPopulator.accept(ItemStackBuilder.of(Material.GRASS_BLOCK)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.town-plots.name", "town_block_size", chosenTown.getTownBlocks().size()))
+                .name(TownyPortal.plugin.message("gui.town-options.town-plots.name", "town_block_size", chosenTown.getTownBlocks().size()))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-plots.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-plots.lore2"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-plots.lore3"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-plots.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-plots.lore2"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-plots.lore3"))
                 .buildItem().build());
 
         // place right option: town bankrupt status
-        String bankrupt = TownyPortal.plugin.getMessage("gui.town-options.town-bankrupt.bankrupt");
-        String nonBankrupt = TownyPortal.plugin.getMessage("gui.town-options.town-bankrupt.non-bankrupt");
+        String bankrupt = TownyPortal.plugin.message("gui.town-options.town-bankrupt.bankrupt");
+        String nonBankrupt = TownyPortal.plugin.message("gui.town-options.town-bankrupt.non-bankrupt");
         rightOptionPopulator.accept(ItemStackBuilder.of(Material.SUNFLOWER)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.town-bankrupt.name", "bankrupt_status", chosenTown.isBankrupt() ? bankrupt : nonBankrupt))
+                .name(TownyPortal.plugin.message("gui.town-options.town-bankrupt.name", "bankrupt_status", chosenTown.isBankrupt() ? bankrupt : nonBankrupt))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-bankrupt.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-bankrupt.lore2"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-bankrupt.lore3"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-bankrupt.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-bankrupt.lore2"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-bankrupt.lore3"))
                 .buildItem().build());
 
         // place right option: town map
         rightOptionPopulator.accept(ItemStackBuilder.of(Material.MAP)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.town-map.name"))
+                .name(TownyPortal.plugin.message("gui.town-options.town-map.name"))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-map.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-map.lore2"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-map.lore3"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-map.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-map.lore2"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-map.lore3"))
                 .buildItem().build());
 
         // place right option: town taxes
         rightOptionPopulator.accept(ItemStackBuilder.of(Material.RAW_GOLD)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.town-taxes.name", "taxes", chosenTown.getTaxes(),
-                        "is_tax_percentage", chosenTown.isTaxPercentage() ? TownyPortal.plugin.getMessage("gui.right") : TownyPortal.plugin.getMessage("gui.wrong")))
+                .name(TownyPortal.plugin.message("gui.town-options.town-taxes.name", "taxes", chosenTown.getTaxes(),
+                        "is_tax_percentage", chosenTown.isTaxPercentage() ? TownyPortal.plugin.message("gui.right") : TownyPortal.plugin.message("gui.wrong")))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-taxes.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-taxes.lore2"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-taxes.lore3"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-taxes.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-taxes.lore2"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-taxes.lore3"))
                 .buildItem().build());
 
         // place right option: town outposts
         rightOptionPopulator.accept(ItemStackBuilder.of(Material.BIRCH_BOAT)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.town-outposts.name", "outpost_num", chosenTown.getAllOutpostSpawns().size()))
+                .name(TownyPortal.plugin.message("gui.town-options.town-outposts.name", "outpost_num", chosenTown.getAllOutpostSpawns().size()))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-outposts.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-outposts.lore2"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-outposts.lore3"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-outposts.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-outposts.lore2"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-outposts.lore3"))
                 .buildItem().build());
 
         // place right option: town bank
         rightOptionPopulator.accept(ItemStackBuilder.of(Material.CHEST)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.town-bank.name", "bank_balance", chosenTown.getAccount().getCachedBalance()))
+                .name(TownyPortal.plugin.message("gui.town-options.town-bank.name", "bank_balance", chosenTown.getAccount().getCachedBalance()))
                 .lore("")
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-bank.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-bank.lore2"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.town-bank.lore3"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-bank.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-bank.lore2"))
+                .lore(TownyPortal.plugin.message("gui.town-options.town-bank.lore3"))
                 .buildItem().build());
 
         // place back button
         this.BACK_BUTTON.newPopulator(this.gui).accept(ItemStackBuilder.of(Material.REDSTONE)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.back.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.back.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.back.lore2"))
+                .name(TownyPortal.plugin.message("gui.town-options.back.name"))
+                .lore(TownyPortal.plugin.message("gui.town-options.back.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.back.lore2"))
                 .build(() -> this.gui.switchView((this.parentView))));
     }
 

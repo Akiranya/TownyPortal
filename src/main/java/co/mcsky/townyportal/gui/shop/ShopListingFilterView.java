@@ -26,25 +26,25 @@ public class ShopListingFilterView extends ShopListingSimpleView {
     @Override
     public void renderSubview() {
         FILTER_BUY_SHOP.newPopulator(gui).accept(ItemStackBuilder.of(Material.SPYGLASS)
-                .name(TownyPortal.plugin.getMessage("gui.shop-listing.filter-buy-shop.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-buy-shop.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-buy-shop.lore2"))
+                .name(TownyPortal.plugin.message("gui.shop-listing.filter-buy-shop.name"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.filter-buy-shop.lore1"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.filter-buy-shop.lore2"))
                 .build(() -> {
                     updateContent(ShopFilters.BUY());
                     render();
                 }));
         FILTER_SELL_SHOP.newPopulator(gui).accept(ItemStackBuilder.of(Material.SPYGLASS)
-                .name(TownyPortal.plugin.getMessage("gui.shop-listing.filter-sell-shop.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-sell-shop.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-sell-shop.lore2"))
+                .name(TownyPortal.plugin.message("gui.shop-listing.filter-sell-shop.name"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.filter-sell-shop.lore1"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.filter-sell-shop.lore2"))
                 .build(() -> {
                     updateContent(ShopFilters.SELL());
                     render();
                 }));
         FILTER_ALL_SHOP.newPopulator(gui).accept(ItemStackBuilder.of(Material.SPYGLASS)
-                .name(TownyPortal.plugin.getMessage("gui.shop-listing.filter-all-shop.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-all-shop.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.shop-listing.filter-all-shop.lore2"))
+                .name(TownyPortal.plugin.message("gui.shop-listing.filter-all-shop.name"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.filter-all-shop.lore1"))
+                .lore(TownyPortal.plugin.message("gui.shop-listing.filter-all-shop.lore2"))
                 .build(() -> {
                     updateContent(ShopFilters.ALL());
                     render();

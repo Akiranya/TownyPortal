@@ -26,9 +26,9 @@ public class ShopListingTownView extends ShopListingSimpleView {
     @Override
     public void renderSubview() {
         BACK.newPopulator(gui).accept(ItemStackBuilder.of(Material.REDSTONE)
-                .name(TownyPortal.plugin.getMessage("gui.town-options.back.name"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.back.lore1"))
-                .lore(TownyPortal.plugin.getMessage("gui.town-options.back.lore2"))
+                .name(TownyPortal.plugin.message("gui.town-options.back.name"))
+                .lore(TownyPortal.plugin.message("gui.town-options.back.lore1"))
+                .lore(TownyPortal.plugin.message("gui.town-options.back.lore2"))
                 .build(() -> gui.switchView(parentView)));
     }
 }
