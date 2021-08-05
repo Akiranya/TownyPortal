@@ -45,30 +45,32 @@ public abstract class ShopListingSimpleView extends PaginatedView {
     }
 
     private Item shopIcon(ShopModel s) {
-        itemCacheMap.putIfAbsent(s.location(), itemCacheMap.put(s.location(), Expiring.suppliedBy(() -> {
-            int shopQuantity = s.getQuantity();
-            String buyPrice = s.hasBuyPrice()
-                    ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3", "amount", shopQuantity, "buy_price", s.getBuyPrice())
-                    : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3-unavailable");
-            String sellPrice = s.hasSellPrice()
-                    ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4", "amount", shopQuantity, "sell_price", s.getSellPrice())
-                    : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4-unavailable");
-            return ItemStackBuilder.of(s.getItem())
-                    .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
-                    .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore1", "owner", s.ownerName()))
-                    .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore2", "town", s.getTown().getName()))
-                    .lore(buyPrice) // buy price
-                    .lore(sellPrice) // sell price
-                    .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
-                    .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore5")) // click to teleport
-                    .build(() -> {
-                        try {
-                            PaperLib.teleportAsync(gui.getPlayer(), s.getTown().getSpawn());
-                        } catch (TownyException e) {
-                            e.printStackTrace();
-                        }
-                    });
-        }, TownyPortal.plugin.config.shop_icon_cache_timeout, TimeUnit.SECONDS))); // shop icon expires in 5min
+        if (!itemCacheMap.containsKey(s.location())) {
+            itemCacheMap.put(s.location(), Expiring.suppliedBy(() -> {
+                int shopQuantity = s.getQuantity();
+                String buyPrice = s.hasBuyPrice()
+                        ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3", "amount", shopQuantity, "buy_price", s.getBuyPrice())
+                        : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3-unavailable");
+                String sellPrice = s.hasSellPrice()
+                        ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4", "amount", shopQuantity, "sell_price", s.getSellPrice())
+                        : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4-unavailable");
+                return ItemStackBuilder.of(s.getItem())
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore1", "owner", s.ownerName()))
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore2", "town", s.getTown().getName()))
+                        .lore(buyPrice) // buy price
+                        .lore(sellPrice) // sell price
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore5")) // click to teleport
+                        .build(() -> {
+                            try {
+                                PaperLib.teleportAsync(gui.getPlayer(), s.getTown().getSpawn());
+                            } catch (TownyException e) {
+                                e.printStackTrace();
+                            }
+                        });
+            }, TownyPortal.plugin.config.shop_icon_cache_timeout, TimeUnit.SECONDS)); // shop icon cache expires
+        }
         return itemCacheMap.get(s.location()).get();
     }
 
