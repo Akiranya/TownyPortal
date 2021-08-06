@@ -4,6 +4,7 @@ import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.TownyUtils;
 import co.mcsky.townyportal.data.ShopModel;
 import co.mcsky.townyportal.data.TownModel;
+import co.mcsky.townyportal.gui.shop.ShopItemCache;
 import com.Acrobot.ChestShop.Events.Protection.BuildPermissionEvent;
 import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
 import com.Acrobot.ChestShop.Events.ShopDestroyedEvent;
@@ -92,6 +93,10 @@ public class ShopListener implements TerminableModule {
 
                     final ShopModel shopModel = new ShopModel(town.getUUID(), e.getPlayer().getUniqueId(), e.getPlayer().getName(), e.getSignLines(), sign.getLocation());
                     TownyPortal.plugin.getShopModelDatasource().addShopModel(shopModel);
+
+                    // refresh item cache immediately
+                    ShopItemCache.refresh(shopModel);
+
                     if (TownyPortal.plugin.isDebugMode()) {
                         TownyPortal.plugin.getLogger().info("Added shop model to datasource successfully");
                     }
@@ -104,6 +109,11 @@ public class ShopListener implements TerminableModule {
                     final Sign sign = e.getSign();
                     final Location signLocation = sign.getBlock().getLocation();
                     TownyPortal.plugin.getShopModelDatasource().removeShopModel(signLocation);
+
+                    // no need to invalidate cache
+                    // because we always refresh cache when sign shop is created
+                    // also, the cache will expire!
+
                     if (TownyPortal.plugin.isDebugMode()) {
                         TownyPortal.plugin.getLogger().info("Removed shop model from datasource");
                     }

@@ -2,7 +2,10 @@ package co.mcsky.townyportal.data;
 
 import org.bukkit.Location;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class ShopModelDatasource {
 
@@ -19,6 +22,10 @@ public class ShopModelDatasource {
 
     public void setShops(List<ShopModel> shops) {
         shops.forEach(s -> shopMap.put(s.location(), s));
+    }
+
+    public ShopModel getShopModel(Location location) {
+        return shopMap.get(location);
     }
 
     public List<ShopModel> getShopList() {

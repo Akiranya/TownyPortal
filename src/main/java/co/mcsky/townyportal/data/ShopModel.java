@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.UUID;
 
 public record ShopModel(UUID townUuid,
@@ -53,11 +54,14 @@ public record ShopModel(UUID townUuid,
 
         ShopModel shopModel = (ShopModel) o;
 
+        if (!Arrays.equals(lines, shopModel.lines)) return false;
         return location.equals(shopModel.location);
     }
 
     @Override
     public int hashCode() {
-        return location.hashCode();
+        int result = Arrays.hashCode(lines);
+        result = 31 * result + location.hashCode();
+        return result;
     }
 }
