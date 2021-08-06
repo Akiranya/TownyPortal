@@ -57,7 +57,12 @@ public abstract class ShopListingAbstractView extends PaginatedView {
     }
 
     public void updateContent(Predicate<ShopModel> filter) {
-        List<Item> content = TownyPortal.plugin.getShopModelDatasource().getShopList().stream().filter(filter).map(this::getShopIcon).toList();
+        List<Item> content = TownyPortal.plugin.getShopModelDatasource()
+                .getShopList()
+                .stream()
+                .filter(filter)
+                .map(this::getShopIcon)
+                .toList();
         updateContent(content);
     }
 
