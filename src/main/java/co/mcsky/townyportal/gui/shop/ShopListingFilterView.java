@@ -6,7 +6,7 @@ import me.lucko.helper.item.ItemStackBuilder;
 import me.lucko.helper.menu.scheme.MenuScheme;
 import org.bukkit.Material;
 
-public class ShopListingFilterView extends ShopListingSimpleView {
+public class ShopListingFilterView extends ShopListingAbstractView {
 
     private final static MenuScheme FILTER_BUY_SHOP = new MenuScheme()
             .maskEmpty(5)

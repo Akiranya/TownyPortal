@@ -4,75 +4,75 @@ import co.mcsky.moecore.gui.PaginatedView;
 import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.data.ShopModel;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.paperlib.PaperLib;
-import me.lucko.helper.cache.Expiring;
 import me.lucko.helper.item.ItemStackBuilder;
 import me.lucko.helper.menu.Item;
 import me.lucko.helper.menu.paginated.PageInfo;
 import me.lucko.helper.menu.scheme.MenuScheme;
 import me.lucko.helper.menu.scheme.StandardSchemeMappings;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public abstract class ShopListingSimpleView extends PaginatedView {
+public abstract class ShopListingAbstractView extends PaginatedView {
+
+    // initialize shop icon cache
+    private static final LoadingCache<ShopModel, ItemStackBuilder> shopIconCache = CacheBuilder.newBuilder()
+            .expireAfterAccess(TownyPortal.plugin.config.shop_icon_cache_timeout, TimeUnit.SECONDS)
+            .build(CacheLoader.from(key -> {
+                int shopQuantity = key.getQuantity();
+                String buyPrice = key.hasBuyPrice()
+                        ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3", "amount", shopQuantity, "buy_price", key.getBuyPrice())
+                        : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3-unavailable");
+                String sellPrice = key.hasSellPrice()
+                        ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4", "amount", shopQuantity, "sell_price", key.getSellPrice())
+                        : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4-unavailable");
+                return ItemStackBuilder.of(key.getItem())
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore1", "owner", key.ownerName()))
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore2", "town", key.getTown().getName()))
+                        .lore(buyPrice) // buy price
+                        .lore(sellPrice) // sell price
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore5"));
+            }));
 
     // the backed GUI
     protected final SeamlessGui gui;
-    private final Map<Location, Expiring<Item>> itemCacheMap;
 
-    public ShopListingSimpleView(SeamlessGui gui) {
+    public ShopListingAbstractView(SeamlessGui gui) {
         super(gui);
         this.gui = gui;
-        this.itemCacheMap = new HashMap<>();
 
         // update content upon this view creation
         updateContent(ShopFilters.ALL());
     }
 
     public void updateContent(Predicate<ShopModel> filter) {
-        // TODO add cache for shop icons
-        List<Item> content = TownyPortal.plugin.getShopModelDatasource().getShopList().stream().filter(filter).map(this::shopIcon).toList();
+        List<Item> content = TownyPortal.plugin.getShopModelDatasource().getShopList().stream().filter(filter).map(this::getShopIcon).toList();
         updateContent(content);
     }
 
-    private Item shopIcon(ShopModel s) {
-        if (!itemCacheMap.containsKey(s.location())) {
-            itemCacheMap.put(s.location(), Expiring.suppliedBy(() -> {
-                int shopQuantity = s.getQuantity();
-                String buyPrice = s.hasBuyPrice()
-                        ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3", "amount", shopQuantity, "buy_price", s.getBuyPrice())
-                        : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3-unavailable");
-                String sellPrice = s.hasSellPrice()
-                        ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4", "amount", shopQuantity, "sell_price", s.getSellPrice())
-                        : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4-unavailable");
-                return ItemStackBuilder.of(s.getItem())
-                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
-                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore1", "owner", s.ownerName()))
-                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore2", "town", s.getTown().getName()))
-                        .lore(buyPrice) // buy price
-                        .lore(sellPrice) // sell price
-                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
-                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore5")) // click to teleport
-                        .build(() -> {
-                            try {
-                                PaperLib.teleportAsync(gui.getPlayer(), s.getTown().getSpawn());
-                            } catch (TownyException e) {
-                                e.printStackTrace();
-                            }
-                        });
-            }, TownyPortal.plugin.config.shop_icon_cache_timeout, TimeUnit.SECONDS)); // shop icon cache expires
-        }
-        return itemCacheMap.get(s.location()).get();
+    public Item getShopIcon(ShopModel s) {
+        return shopIconCache.getUnchecked(s).build(() -> {
+            try {
+                PaperLib.teleportAsync(gui.getPlayer(), s.getTown().getSpawn());
+            } catch (TownyException e) {
+                e.printStackTrace();
+            }
+        });
     }
+
+    @Override
+    public abstract void renderSubview();
 
     @Override
     public MenuScheme backgroundSchema() {

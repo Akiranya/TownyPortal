@@ -9,7 +9,7 @@ import org.bukkit.Material;
 
 import java.util.UUID;
 
-public class ShopListingTownView extends ShopListingSimpleView {
+public class ShopListingTownView extends ShopListingAbstractView {
 
     private static final MenuScheme BACK = new MenuScheme()
             .maskEmpty(5)
