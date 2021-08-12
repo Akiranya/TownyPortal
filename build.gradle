@@ -69,7 +69,7 @@ dependencies {
     compileOnly('com.acrobot.chestshop:chestshop:3.12')
 
     // moecore
-    compileOnly('com.github.Akiranya:MoeCore:0.2')
+    compileOnly('com.github.Akiranya:MoeCore:0.3')
 
 }
 
