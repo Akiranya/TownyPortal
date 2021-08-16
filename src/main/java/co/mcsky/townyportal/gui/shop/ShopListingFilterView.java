@@ -18,8 +18,8 @@ public class ShopListingFilterView extends ShopListingAbstractView {
             .maskEmpty(5)
             .mask("000001000");
 
-    public ShopListingFilterView(SeamlessGui gui) {
-        super(gui);
+    public ShopListingFilterView(SeamlessGui gui, String shopType) {
+        super(gui, shopType);
     }
 
     @Override

@@ -23,12 +23,20 @@ public abstract class ShopListingAbstractView extends PaginatedView {
     // the backed GUI
     protected final SeamlessGui gui;
 
-    public ShopListingAbstractView(SeamlessGui gui) {
+    public ShopListingAbstractView(SeamlessGui gui, String shopType) {
         super(gui);
         this.gui = gui;
 
         // update content upon this view creation
-        updateContent(ShopFilters.ALL());
+        switch (shopType) {
+            case "sell" -> updateContent(ShopFilters.SELL());
+            case "buy" -> updateContent(ShopFilters.BUY());
+            case "all" -> updateContent(ShopFilters.ALL());
+        }
+    }
+
+    public ShopListingAbstractView(SeamlessGui gui) {
+        this(gui, "all");
     }
 
     public void updateContent(Predicate<ShopModel> filter) {

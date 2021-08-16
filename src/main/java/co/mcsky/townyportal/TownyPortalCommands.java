@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CommandAlias("townyportal|towns|ts")
+@CommandAlias("towns|ts")
 public class TownyPortalCommands extends BaseCommand {
 
     private final PaperCommandManager commands;
@@ -43,10 +43,11 @@ public class TownyPortalCommands extends BaseCommand {
                 return List.of("-1");
             }
         });
+        commands.getCommandCompletions().registerCompletion("shop_type", c -> List.of("sell", "buy", "all"));
     }
 
     private void registerConditions() {
-        commands.getCommandConditions().addCondition("is-mayor", c -> {
+        commands.getCommandConditions().addCondition("is_mayor", c -> {
             if (!TownyUtils.isMayor(c.getIssuer().getUniqueId())) {
                 throw new ConditionFailedException(TownyPortal.plugin.message(c.getIssuer().getPlayer(), "chat-message.only-mayor-can-use"));
             }
@@ -60,8 +61,9 @@ public class TownyPortalCommands extends BaseCommand {
     }
 
     @Subcommand("shops")
-    public void openShopGui(Player player) {
-        new ShopListingGui(player).open();
+    @CommandCompletion("shop_type")
+    public void openShopGui(Player player, String shopType) {
+        new ShopListingGui(player, shopType).open();
     }
 
     @Subcommand("reloadconfig")
@@ -90,7 +92,7 @@ public class TownyPortalCommands extends BaseCommand {
 
     @SuppressWarnings("ConstantConditions")
     @Subcommand("board")
-    @Conditions("is-mayor")
+    @Conditions("is_mayor")
     class BoardCommand extends BaseCommand {
 
         @Default
