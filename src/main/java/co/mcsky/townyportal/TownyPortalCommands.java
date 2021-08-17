@@ -61,9 +61,9 @@ public class TownyPortalCommands extends BaseCommand {
     }
 
     @Subcommand("shops")
-    @CommandCompletion("shop_type")
+    @CommandCompletion("@shop_type")
     public void openShopGui(Player player, String shopType) {
-        new ShopListingGui(player, shopType).open();
+        new ShopListingGui(player, shopType.trim().toLowerCase()).open();
     }
 
     @Subcommand("reloadconfig")

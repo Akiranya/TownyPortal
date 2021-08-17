@@ -31,7 +31,7 @@ public abstract class ShopListingAbstractView extends PaginatedView {
         switch (shopType) {
             case "sell" -> updateContent(ShopFilters.SELL());
             case "buy" -> updateContent(ShopFilters.BUY());
-            case "all" -> updateContent(ShopFilters.ALL());
+            default -> updateContent(ShopFilters.ALL());
         }
     }
 
