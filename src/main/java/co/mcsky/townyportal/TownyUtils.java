@@ -1,29 +1,62 @@
 package co.mcsky.townyportal;
 
 import co.mcsky.townyportal.data.TownModel;
+import com.google.common.base.Preconditions;
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.command.TownCommand;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
+import com.palmergames.paperlib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class TownyUtils {
 
-    private static final TownyAPI townyApi = TownyAPI.getInstance();
+    /**
+     * Teleports the player to the target town.
+     * <p>
+     * If the player is a newcomer (i.e. he joined the server within X hours),
+     * then he will be teleported to the target town regardless of any
+     * restrictions. Otherwise, normal teleportation will be used.
+     *
+     * @param player the player
+     * @param town   the target town
+     */
+    public static void friendlyTownSpawn(Player player, Town town) {
+        try {
+            final Resident resident = TownyAPI.getInstance().getResident(player.getUniqueId());
+            Preconditions.checkNotNull(resident, "resident");
+
+            final long hoursSinceRegistered = TimeUnit.of(ChronoUnit.MILLIS).toHours(System.currentTimeMillis() - resident.getRegistered());
+            if (TownyPortal.plugin.config.bypass_private_town_enabled || hoursSinceRegistered < TownyPortal.plugin.config.bypass_private_town_duration) {
+                // bypass, or the player joined the server within X hours
+                PaperLib.teleportAsync(player, town.getSpawn());
+            } else {
+                // the player is a senior
+                TownCommand.townSpawn(player, new String[]{}, false, false);
+            }
+        } catch (TownyException e) {
+            player.sendMessage(e.getMessage());
+        }
+    }
 
     public static boolean isMayor(UUID uuid) {
-        Resident resident = townyApi.getResident(uuid);
+        Resident resident = TownyAPI.getInstance().getResident(uuid);
         if (resident == null) return false;
         return resident.isMayor();
     }
 
     public static Optional<TownModel> getTownModel(UUID residentUUID) {
-        Resident resident = townyApi.getResident(residentUUID);
+        Resident resident = TownyAPI.getInstance().getResident(residentUUID);
         if (resident == null || !resident.hasTown()) return Optional.empty();
         try {
             UUID uuid = resident.getTown().getUUID();
@@ -34,7 +67,7 @@ public class TownyUtils {
     }
 
     public static TownModel getTownModelNullable(UUID residentUUID) {
-        Resident resident = townyApi.getResident(residentUUID);
+        Resident resident = TownyAPI.getInstance().getResident(residentUUID);
         if (resident == null || !resident.hasTown()) return null;
         try {
             UUID townUuid = resident.getTown().getUUID();

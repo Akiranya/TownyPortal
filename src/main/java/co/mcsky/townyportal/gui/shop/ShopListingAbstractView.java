@@ -3,9 +3,8 @@ package co.mcsky.townyportal.gui.shop;
 import co.mcsky.moecore.gui.PaginatedView;
 import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.townyportal.TownyPortal;
+import co.mcsky.townyportal.TownyUtils;
 import co.mcsky.townyportal.data.ShopModel;
-import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.paperlib.PaperLib;
 import me.lucko.helper.item.ItemStackBuilder;
 import me.lucko.helper.menu.Item;
 import me.lucko.helper.menu.paginated.PageInfo;
@@ -50,13 +49,7 @@ public abstract class ShopListingAbstractView extends PaginatedView {
     }
 
     public Item getShopIcon(ShopModel s) {
-        return ShopItemCache.get(s).build(() -> {
-            try {
-                PaperLib.teleportAsync(gui.getPlayer(), s.getTown().getSpawn());
-            } catch (TownyException e) {
-                e.printStackTrace();
-            }
-        });
+        return ShopItemCache.get(s).build(() -> TownyUtils.friendlyTownSpawn(gui.getPlayer(), s.getTown()));
     }
 
     @Override

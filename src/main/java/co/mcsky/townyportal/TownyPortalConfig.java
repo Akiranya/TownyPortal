@@ -15,11 +15,15 @@ public class TownyPortalConfig {
 
     public boolean debug;
     public int save_interval;
-    public int town_board_max_line;
+
     public boolean shop_must_inside_plots;
     public boolean shop_must_inside_shop_plots;
-    public int resident_name_num_per_line;
     public int shop_icon_cache_timeout;
+
+    public int town_board_max_line;
+    public int resident_name_num_per_line;
+    public boolean bypass_private_town_enabled;
+    public int bypass_private_town_duration;
 
     /* config nodes end */
 
@@ -42,11 +46,14 @@ public class TownyPortalConfig {
 
         debug = root.node("debug").getBoolean(false);
         save_interval = root.node("save-interval").getInt(1800);
-        town_board_max_line = root.node("town-board-max-line").getInt(4);
         shop_must_inside_plots = root.node("shop-must-inside-plots").getBoolean(true);
         shop_must_inside_shop_plots = root.node("shop-must-inside-shop-plots").getBoolean(true);
-        resident_name_num_per_line = root.node("resident-num-per-line").getInt(4);
         shop_icon_cache_timeout = root.node("shop-icon-cache-timeout").getInt(600);
+
+        town_board_max_line = root.node("town-board-max-line").getInt(4);
+        resident_name_num_per_line = root.node("resident-num-per-line").getInt(4);
+        bypass_private_town_enabled = root.node("bypass-private-town").getBoolean(true);
+        bypass_private_town_duration = root.node("private-bypass-duration").getInt(72);
     }
 
     public void save() {

@@ -13,7 +13,8 @@ import java.util.UUID;
 
 public class TownModelSerializer implements TypeSerializer<TownModel> {
 
-    @Override public TownModel deserialize(Type type, ConfigurationNode node) throws SerializationException {
+    @Override
+    public TownModel deserialize(Type type, ConfigurationNode node) throws SerializationException {
         UUID uuid = node.node("uuid").get(UUID.class);
         List<String> townBoard = node.node("town-board").getList(String.class);
         int shopNum = node.node("shop-num").getInt();
@@ -25,7 +26,8 @@ public class TownModelSerializer implements TypeSerializer<TownModel> {
         return new TownModel(uuid, townBoard, shopNum);
     }
 
-    @Override public void serialize(Type type, @Nullable TownModel townModel, ConfigurationNode node) throws
+    @Override
+    public void serialize(Type type, @Nullable TownModel townModel, ConfigurationNode node) throws
             SerializationException {
         if (townModel == null) {
             throw new SerializationException("townModel == null");

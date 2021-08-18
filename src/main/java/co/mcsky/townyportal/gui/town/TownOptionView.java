@@ -4,15 +4,14 @@ import co.mcsky.moecore.gui.GuiView;
 import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.moecore.skull.SkullCreator;
 import co.mcsky.townyportal.TownyPortal;
+import co.mcsky.townyportal.TownyUtils;
 import co.mcsky.townyportal.gui.shop.ShopListingTownView;
 import com.google.common.collect.Lists;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
-import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyObject;
-import com.palmergames.paperlib.PaperLib;
 import me.lucko.helper.item.ItemStackBuilder;
 import me.lucko.helper.menu.scheme.MenuPopulator;
 import me.lucko.helper.menu.scheme.MenuScheme;
@@ -92,13 +91,7 @@ public class TownOptionView implements GuiView {
                 .name(TownyPortal.plugin.message("gui.town-options.teleport-to-town.name", "town_name", chosenTown.getName()))
                 .lore("")
                 .lore(TownyPortal.plugin.message("gui.town-options.teleport-to-town.lore1"))
-                .build(() -> {
-                    try {
-                        PaperLib.teleportAsync(player, chosenTown.getSpawn());
-                    } catch (TownyException e) {
-                        player.sendMessage(e.getMessage());
-                    }
-                }));
+                .build(() -> TownyUtils.friendlyTownSpawn(player, chosenTown)));
 
         // join the town
         leftOptionPopulator.accept(ItemStackBuilder.of(Material.PAPER)
@@ -141,8 +134,9 @@ public class TownOptionView implements GuiView {
                 .lore("")
                 .lore(TownyPortal.plugin.message("gui.town-options.town-resident.lore2"))
                 .transform(i -> SkullCreator.itemWithBase64(i, skin));
-        for (List<String> partition : partitions)
+        for (List<String> partition : partitions) {
             item.lore(ChatColor.GRAY + partition.stream().reduce(((s1, s2) -> s1 + ", " + s2)).orElse(""));
+        }
         rightOptionPopulator.accept(item.buildItem().build());
 
         // place right option: town plots
