@@ -6,6 +6,8 @@ import co.mcsky.moecore.skull.SkullCreator;
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.TownyUtils;
 import co.mcsky.townyportal.gui.shop.ShopListingTownView;
+import co.mcsky.townyportal.map.TownMapBuilder;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.AlreadyRegisteredException;
@@ -16,6 +18,7 @@ import me.lucko.helper.item.ItemStackBuilder;
 import me.lucko.helper.menu.scheme.MenuPopulator;
 import me.lucko.helper.menu.scheme.MenuScheme;
 import me.lucko.helper.menu.scheme.StandardSchemeMappings;
+import me.lucko.helper.metadata.Metadata;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,7 +27,7 @@ import java.util.List;
 
 public class TownOptionView implements GuiView {
 
-    public static final String skin = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmFkNzBhYTMzNWVlYTNlNDY2Zjk2N2MyM2JhNTFlYjgyNzY1YTkwNzIwYzkwOTZiNzBmOGIxYzY1ZmMyYzc3MCJ9fX0=";
+    private static final String skin = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmFkNzBhYTMzNWVlYTNlNDY2Zjk2N2MyM2JhNTFlYjgyNzY1YTkwNzIwYzkwOTZiNzBmOGIxYzY1ZmMyYzc3MCJ9fX0=";
 
     private final SeamlessGui gui;
 
@@ -58,16 +61,14 @@ public class TownOptionView implements GuiView {
     private final GuiView parentView;
 
     // convenient fields
-    private final TownyAPI townyApi;
     private final Town chosenTown;
 
-    public TownOptionView(SeamlessGui gui, TownListingView townListingView) {
+    public TownOptionView(SeamlessGui gui, GuiView parentView) {
         this.gui = gui;
-        this.parentView = townListingView;
+        this.parentView = parentView;
 
-        // convenient fields
-        this.townyApi = TownyAPI.getInstance();
-        this.chosenTown = townListingView.getChosenTown();
+        chosenTown = Metadata.provideForPlayer(gui.getPlayer()).getOrNull(TownListingGui.CHOSEN_TOWN_KEY);
+        Preconditions.checkNotNull(chosenTown, "chosenTown");
     }
 
     @Override
@@ -102,7 +103,7 @@ public class TownOptionView implements GuiView {
                 .lore("")
                 .lore(TownyPortal.plugin.message("gui.town-options.join-town.lore3"))
                 .build(() -> {
-                    Resident resident = townyApi.getResident(player.getUniqueId());
+                    Resident resident = TownyAPI.getInstance().getResident(player.getUniqueId());
                     try {
                         chosenTown.addResidentCheck(resident);
                         if (chosenTown.isOpen() && resident != null) {
@@ -166,12 +167,11 @@ public class TownOptionView implements GuiView {
                 .lore(TownyPortal.plugin.message("gui.town-options.town-map.lore1"))
                 .lore(TownyPortal.plugin.message("gui.town-options.town-map.lore2"))
                 .lore(TownyPortal.plugin.message("gui.town-options.town-map.lore3"))
-                .buildItem().build());
+                .build(() -> TownMapBuilder.giveMap(player, chosenTown)));
 
         // place right option: town taxes
         rightOptionPopulator.accept(ItemStackBuilder.of(Material.RAW_GOLD)
-                .name(TownyPortal.plugin.message("gui.town-options.town-taxes.name", "taxes", chosenTown.getTaxes(),
-                        "is_tax_percentage", chosenTown.isTaxPercentage() ? TownyPortal.plugin.message("gui.right") : TownyPortal.plugin.message("gui.wrong")))
+                .name(TownyPortal.plugin.message("gui.town-options.town-taxes.name", "taxes", chosenTown.getTaxes(), "is_tax_percentage", chosenTown.isTaxPercentage() ? TownyPortal.plugin.message("gui.right") : TownyPortal.plugin.message("gui.wrong")))
                 .lore("")
                 .lore(TownyPortal.plugin.message("gui.town-options.town-taxes.lore1"))
                 .lore(TownyPortal.plugin.message("gui.town-options.town-taxes.lore2"))

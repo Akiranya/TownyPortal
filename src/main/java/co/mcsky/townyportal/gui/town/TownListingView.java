@@ -13,6 +13,7 @@ import me.lucko.helper.menu.Item;
 import me.lucko.helper.menu.paginated.PageInfo;
 import me.lucko.helper.menu.scheme.MenuScheme;
 import me.lucko.helper.menu.scheme.StandardSchemeMappings;
+import me.lucko.helper.metadata.Metadata;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -127,10 +128,6 @@ public class TownListingView extends PaginatedView {
         updateContent(content);
     }
 
-    public Town getChosenTown() {
-        return chosenTown;
-    }
-
     private Item townIcon(Town town) {
         return ItemStackBuilder.of(Material.PLAYER_HEAD)
                 .name(TownyPortal.plugin.message("gui.town-listing.town-entry.name", "town_name", town.getName()))
@@ -143,8 +140,8 @@ public class TownListingView extends PaginatedView {
                 .lore(TownyPortal.plugin.message("gui.town-listing.town-entry.lore3"))
                 .transform(item -> SkullCache.INSTANCE.itemWithUuid(item, town.getMayor().getUUID()))
                 .build(() -> {
-                    this.chosenTown = town;
-                    this.gui.switchView(new TownOptionView(gui, this));
+                    Metadata.provideForPlayer(gui.getPlayer()).put(TownListingGui.CHOSEN_TOWN_KEY, town);
+                    gui.switchView(new TownOptionView(gui, this));
                 });
     }
 }

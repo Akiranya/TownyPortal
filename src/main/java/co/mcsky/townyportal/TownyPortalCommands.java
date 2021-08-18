@@ -7,6 +7,11 @@ import co.aikar.commands.annotation.*;
 import co.mcsky.townyportal.data.TownModel;
 import co.mcsky.townyportal.gui.shop.ShopListingGui;
 import co.mcsky.townyportal.gui.town.TownListingGui;
+import co.mcsky.townyportal.map.TownMapBuilder;
+import com.google.common.base.Preconditions;
+import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownyObject;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -43,7 +48,8 @@ public class TownyPortalCommands extends BaseCommand {
                 return List.of("-1");
             }
         });
-        commands.getCommandCompletions().registerCompletion("shop_type", c -> List.of("sell", "buy", "all"));
+        commands.getCommandCompletions().registerCompletion("shop-type", c -> List.of("sell", "buy", "all"));
+        commands.getCommandCompletions().registerCompletion("towns", c -> TownyAPI.getInstance().getDataSource().getTowns().stream().map(TownyObject::getName).toList());
     }
 
     private void registerConditions() {
@@ -61,9 +67,17 @@ public class TownyPortalCommands extends BaseCommand {
     }
 
     @Subcommand("shops")
-    @CommandCompletion("@shop_type")
+    @CommandCompletion("@shop-type")
     public void openShopGui(Player player, String shopType) {
         new ShopListingGui(player, shopType.trim().toLowerCase()).open();
+    }
+
+    @Subcommand("map")
+    @CommandCompletion("@towns")
+    public void giveMap(Player player, String town) {
+        final Town townObj = TownyAPI.getInstance().getTown(town);
+        Preconditions.checkNotNull(townObj);
+        TownMapBuilder.giveMap(player, townObj);
     }
 
     @Subcommand("reloadconfig")
@@ -97,18 +111,18 @@ public class TownyPortalCommands extends BaseCommand {
 
         @Default
         public void help(Player player) {
-            player.sendMessage(TownyPortal.plugin.message(player, "chat-message.help.board-view"));
-            player.sendMessage(TownyPortal.plugin.message(player, "chat-message.help.board-add"));
-            player.sendMessage(TownyPortal.plugin.message(player, "chat-message.help.board-set"));
-            player.sendMessage(TownyPortal.plugin.message(player, "chat-message.help.board-delete"));
-            player.sendMessage(TownyPortal.plugin.message(player, "chat-message.help.board-clear"));
+            player.sendMessage(TownyPortal.plugin.message(player, "town-board.cmd-help.view"));
+            player.sendMessage(TownyPortal.plugin.message(player, "town-board.cmd-help.add"));
+            player.sendMessage(TownyPortal.plugin.message(player, "town-board.cmd-help.set"));
+            player.sendMessage(TownyPortal.plugin.message(player, "town-board.cmd-help.delete"));
+            player.sendMessage(TownyPortal.plugin.message(player, "town-board.cmd-help.clear"));
         }
 
         @Subcommand("view")
         public void view(Player player) {
             TownModel townModel = TownyUtils.getTownModelNullable(player.getUniqueId());
             int index = 1;
-            player.sendMessage(TownyPortal.plugin.message(player, "chat-message.town-board-view-title"));
+            player.sendMessage(TownyPortal.plugin.message(player, "town-board.title"));
             for (String l : townModel.getTownBoard()) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', index++ + ". " + l));
             }
@@ -120,11 +134,11 @@ public class TownyPortalCommands extends BaseCommand {
         public void add(Player player, String text) {
             TownModel townModel = TownyUtils.getTownModelNullable(player.getUniqueId());
             if (townModel.getTownBoardNum() >= TownyPortal.plugin.config.town_board_max_line) {
-                player.sendMessage(TownyPortal.plugin.message(player, "chat-message.exceed-town-board-max-line"));
+                player.sendMessage(TownyPortal.plugin.message(player, "town-board.exceed-max-line"));
             } else {
                 townModel.addTownBoard(text);
                 view(player);
-                player.sendMessage(TownyPortal.plugin.message(player, "chat-message.town-board-updated"));
+                player.sendMessage(TownyPortal.plugin.message(player, "town-board.updated"));
             }
         }
 
@@ -134,12 +148,12 @@ public class TownyPortalCommands extends BaseCommand {
         public void set(Player player, Integer line, String text) {
             TownModel townModel = TownyUtils.getTownModelNullable(player.getUniqueId());
             if (line < 1 || line > townModel.getTownBoardNum()) {
-                player.sendMessage(TownyPortal.plugin.message(player, "chat-message.town-board-out-of-index"));
+                player.sendMessage(TownyPortal.plugin.message(player, "town-board.out-of-index"));
                 return;
             }
             townModel.setTownBoard(line - 1, text);
             view(player);
-            player.sendMessage(TownyPortal.plugin.message(player, "chat-message.town-board-updated"));
+            player.sendMessage(TownyPortal.plugin.message(player, "town-board.updated"));
         }
 
         @Subcommand("delete")
@@ -148,19 +162,19 @@ public class TownyPortalCommands extends BaseCommand {
         public void delete(Player player, Integer line) {
             TownModel townModel = TownyUtils.getTownModelNullable(player.getUniqueId());
             if (line < 1 || line > townModel.getTownBoardNum()) {
-                player.sendMessage(TownyPortal.plugin.message(player, "chat-message.town-board-out-of-index"));
+                player.sendMessage(TownyPortal.plugin.message(player, "town-board.out-of-index"));
                 return;
             }
             townModel.deleteTownBoard(line - 1);
             view(player);
-            player.sendMessage(TownyPortal.plugin.message(player, "chat-message.town-board-updated"));
+            player.sendMessage(TownyPortal.plugin.message(player, "town-board.updated"));
         }
 
         @Subcommand("clear")
         public void clear(Player player) {
             TownModel townModel = TownyUtils.getTownModelNullable(player.getUniqueId());
             townModel.clearTownBoard();
-            player.sendMessage(TownyPortal.plugin.message(player, "chat-message.town-board-cleared"));
+            player.sendMessage(TownyPortal.plugin.message(player, "town-board.cleared"));
         }
 
     }

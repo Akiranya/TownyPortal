@@ -52,8 +52,8 @@ public class TownyPortalConfig {
 
         town_board_max_line = root.node("town-board-max-line").getInt(4);
         resident_name_num_per_line = root.node("resident-num-per-line").getInt(4);
-        bypass_private_town_enabled = root.node("bypass-private-town").getBoolean(true);
-        bypass_private_town_duration = root.node("private-bypass-duration").getInt(72);
+        bypass_private_town_enabled = root.node("bypass-private-town-enabled").getBoolean(true);
+        bypass_private_town_duration = root.node("bypass-private-town-duration").getInt(72);
     }
 
     public void save() {
