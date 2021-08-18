@@ -11,25 +11,29 @@ import java.util.concurrent.TimeUnit;
 
 public class ShopItemCache {
 
-    private static final LoadingCache<ShopModel, ItemStackBuilder> shopIconCache = CacheBuilder.newBuilder()
-            .expireAfterAccess(TownyPortal.plugin.config.shop_icon_cache_timeout, TimeUnit.SECONDS)
-            .build(CacheLoader.from(model -> {
-                int shopQuantity = model.getQuantity();
-                String buyPrice = model.hasBuyPrice()
-                        ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3", "amount", shopQuantity, "buy_price", model.getBuyPrice())
-                        : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3-unavailable");
-                String sellPrice = model.hasSellPrice()
-                        ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4", "amount", shopQuantity, "sell_price", model.getSellPrice())
-                        : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4-unavailable");
-                return ItemStackBuilder.of(model.getItem())
+    private static final LoadingCache<ShopModel, ItemStackBuilder> shopIconCache;
+
+    static {
+        shopIconCache = CacheBuilder.newBuilder()
+                .expireAfterAccess(TownyPortal.plugin.config.shop_icon_cache_timeout, TimeUnit.SECONDS)
+                .build(CacheLoader.from(model -> ItemStackBuilder.of(model.getItem())
                         .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
+                        // owner line
                         .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore1", "owner", model.ownerName()))
+                        // town line
                         .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore2", "town", model.getTown().getName()))
-                        .lore(buyPrice) // buy price
-                        .lore(sellPrice) // sell price
+                        // buy price line
+                        .lore(model.hasBuyPrice()
+                                ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3", "amount", model.getQuantity(), "buy_price", model.getBuyPrice())
+                                : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore3-unavailable"))
+                        // sell price line
+                        .lore(model.hasSellPrice()
+                                ? TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4", "amount", model.getQuantity(), "sell_price", model.getSellPrice())
+                                : TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore4-unavailable"))
                         .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.break-line"))
-                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore5"));
-            }));
+                        // "click me" line
+                        .lore(TownyPortal.plugin.message("gui.shop-listing.shop-icon.lore5"))));
+    }
 
     public static ItemStackBuilder get(ShopModel model) {
         return shopIconCache.getUnchecked(model);

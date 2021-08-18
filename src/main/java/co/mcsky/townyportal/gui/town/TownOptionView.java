@@ -86,6 +86,7 @@ public class TownOptionView implements GuiView {
                 .lore(TownyPortal.plugin.message("gui.town-options.shops.lore1"))
                 .lore(TownyPortal.plugin.message("gui.town-options.shops.lore2"))
                 .build(() -> gui.switchView(new ShopListingTownView(this, gui, chosenTown.getUUID()))));
+
         // teleport to the town
         leftOptionPopulator.accept(ItemStackBuilder.of(Material.MINECART)
                 .name(TownyPortal.plugin.message("gui.town-options.teleport-to-town.name", "town_name", chosenTown.getName()))
@@ -98,6 +99,7 @@ public class TownOptionView implements GuiView {
                         player.sendMessage(e.getMessage());
                     }
                 }));
+
         // join the town
         leftOptionPopulator.accept(ItemStackBuilder.of(Material.PAPER)
                 .name(TownyPortal.plugin.message("gui.town-options.join-town.name", "town_name", chosenTown.getName()))
