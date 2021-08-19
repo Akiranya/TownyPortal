@@ -24,6 +24,7 @@ public class TownyPortalConfig {
     public int resident_name_num_per_line;
     public boolean bypass_private_town_enabled;
     public int bypass_private_town_duration;
+    public String town_map_scale;
 
     /* config nodes end */
 
@@ -54,6 +55,7 @@ public class TownyPortalConfig {
         resident_name_num_per_line = root.node("resident-num-per-line").getInt(4);
         bypass_private_town_enabled = root.node("bypass-private-town-enabled").getBoolean(true);
         bypass_private_town_duration = root.node("bypass-private-town-duration").getInt(72);
+        town_map_scale = root.node("town-map-scale").getString("CLOSE");
     }
 
     public void save() {

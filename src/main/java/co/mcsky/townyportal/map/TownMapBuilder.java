@@ -13,18 +13,21 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class TownMapBuilder {
 
-    private static final CooldownMap<Town> cooldownMap = CooldownMap.create(Cooldown.of(1, TimeUnit.HOURS));
+    private static final Map<UUID, CooldownMap<Town>> cooldownMap = new HashMap<>();
 
     public static ItemStack createMapItem(Town town) {
         final MapView mapView = Bukkit.createMap(town.getWorld());
         try {
             mapView.setCenterX(town.getSpawn().getBlockX());
             mapView.setCenterZ(town.getSpawn().getBlockZ());
-            mapView.setScale(MapView.Scale.NORMAL);
+            mapView.setScale(MapView.Scale.valueOf(TownyPortal.plugin.config.town_map_scale.trim().toUpperCase()));
             mapView.setTrackingPosition(true);
             mapView.setUnlimitedTracking(true);
         } catch (TownyException e) {
@@ -39,12 +42,13 @@ public class TownMapBuilder {
     }
 
     public static void giveMap(Player player, Town town) {
-        if (cooldownMap.test(town)) {
+        CooldownMap<Town> playerCooldownMap = cooldownMap.computeIfAbsent(player.getUniqueId(), k -> CooldownMap.create(Cooldown.of(1, TimeUnit.HOURS)));
+        if (playerCooldownMap.test(town)) {
             final ItemStack mapItem = TownMapBuilder.createMapItem(town);
             player.getInventory().addItem(mapItem);
             player.sendMessage(TownyPortal.plugin.message("town-map.get-map-success", "town", town.getName()));
         } else {
-            player.sendMessage(TownyPortal.plugin.message("town-map.already-obtained", "town", town.getName(), "timeout", cooldownMap.remainingTime(town, TimeUnit.MINUTES)));
+            player.sendMessage(TownyPortal.plugin.message("town-map.already-obtained", "town", town.getName(), "timeout", playerCooldownMap.remainingTime(town, TimeUnit.MINUTES)));
         }
     }
 
