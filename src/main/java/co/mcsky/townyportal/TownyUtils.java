@@ -10,7 +10,6 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
-import com.palmergames.paperlib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -39,7 +38,7 @@ public class TownyUtils {
             final long hoursSinceRegistered = TimeUnit.of(ChronoUnit.MILLIS).toHours(System.currentTimeMillis() - resident.getRegistered());
             if (TownyPortal.plugin.config.bypass_private_town_enabled || hoursSinceRegistered < TownyPortal.plugin.config.bypass_private_town_duration) {
                 // bypass, or the player joined the server within X hours
-                PaperLib.teleportAsync(player, town.getSpawn());
+                player.teleportAsync(town.getSpawn());
             } else {
                 // the player is a senior
                 TownCommand.townSpawn(player, new String[]{}, false, false);
