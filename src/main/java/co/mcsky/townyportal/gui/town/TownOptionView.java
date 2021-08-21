@@ -6,7 +6,7 @@ import co.mcsky.moecore.skull.SkullCreator;
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.TownyUtils;
 import co.mcsky.townyportal.gui.shop.ShopListingTownView;
-import co.mcsky.townyportal.map.TownMapBuilder;
+import co.mcsky.townyportal.util.TownMapBuilder;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.palmergames.bukkit.towny.TownyAPI;

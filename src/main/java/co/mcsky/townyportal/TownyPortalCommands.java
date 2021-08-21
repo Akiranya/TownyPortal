@@ -7,7 +7,7 @@ import co.aikar.commands.annotation.*;
 import co.mcsky.townyportal.data.TownModel;
 import co.mcsky.townyportal.gui.shop.ShopListingGui;
 import co.mcsky.townyportal.gui.town.TownListingGui;
-import co.mcsky.townyportal.map.TownMapBuilder;
+import co.mcsky.townyportal.util.TownMapBuilder;
 import com.google.common.base.Preconditions;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;

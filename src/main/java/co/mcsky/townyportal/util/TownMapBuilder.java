@@ -1,4 +1,4 @@
-package co.mcsky.townyportal.map;
+package co.mcsky.townyportal.util;
 
 import co.mcsky.townyportal.TownyPortal;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
