@@ -11,6 +11,8 @@ public class TownyPortalConfig {
 
     public static final String fileName = "config.yml";
 
+    private final YamlConfigurationLoader loader;
+
     /* config nodes start */
 
     public boolean debug;
@@ -28,7 +30,6 @@ public class TownyPortalConfig {
 
     /* config nodes end */
 
-    private YamlConfigurationLoader loader;
     private CommentedConfigurationNode root;
 
     public TownyPortalConfig() {
@@ -39,7 +40,7 @@ public class TownyPortalConfig {
         try {
             root = loader.load();
         } catch (ConfigurateException e) {
-            TownyPortal.plugin.getLogger().severe(e.getMessage());
+            TownyPortal.logger().severe(e.getMessage());
             TownyPortal.plugin.getServer().getPluginManager().disablePlugin(TownyPortal.plugin);
         }
 
@@ -62,7 +63,7 @@ public class TownyPortalConfig {
         try {
             loader.save(root);
         } catch (ConfigurateException e) {
-            TownyPortal.plugin.getLogger().severe(e.getMessage());
+            TownyPortal.logger().severe(e.getMessage());
         }
     }
 

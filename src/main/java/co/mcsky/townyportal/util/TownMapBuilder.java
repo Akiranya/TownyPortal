@@ -27,14 +27,14 @@ public class TownMapBuilder {
         try {
             mapView.setCenterX(town.getSpawn().getBlockX());
             mapView.setCenterZ(town.getSpawn().getBlockZ());
-            mapView.setScale(MapView.Scale.valueOf(TownyPortal.plugin.config.town_map_scale.trim().toUpperCase()));
+            mapView.setScale(MapView.Scale.valueOf(TownyPortal.config().town_map_scale.trim().toUpperCase()));
             mapView.setTrackingPosition(true);
             mapView.setUnlimitedTracking(true);
         } catch (TownyException e) {
             e.printStackTrace();
         }
         return ItemStackBuilder.of(Material.FILLED_MAP)
-                .name(TownyPortal.plugin.message("town-map.map-title", "town", town.getName()))
+                .name(TownyPortal.text("town-map.map-title", "town", town.getName()))
                 .transformMeta(meta -> {
                     MapMeta mapMeta = (MapMeta) meta;
                     mapMeta.setMapView(mapView);
@@ -46,9 +46,9 @@ public class TownMapBuilder {
         if (playerCooldownMap.test(town)) {
             final ItemStack mapItem = TownMapBuilder.createMapItem(town);
             player.getInventory().addItem(mapItem);
-            player.sendMessage(TownyPortal.plugin.message("town-map.get-map-success", "town", town.getName()));
+            player.sendMessage(TownyPortal.text("town-map.get-map-success", "town", town.getName()));
         } else {
-            player.sendMessage(TownyPortal.plugin.message("town-map.already-obtained", "town", town.getName(), "timeout", playerCooldownMap.remainingTime(town, TimeUnit.MINUTES)));
+            player.sendMessage(TownyPortal.text("town-map.already-obtained", "town", town.getName(), "timeout", playerCooldownMap.remainingTime(town, TimeUnit.MINUTES)));
         }
     }
 

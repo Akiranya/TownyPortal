@@ -1,6 +1,8 @@
 package co.mcsky.townyportal;
 
 import co.aikar.commands.PaperCommandManager;
+import co.mcsky.moecore.text.Text;
+import co.mcsky.moecore.text.TextRepository;
 import co.mcsky.townyportal.data.ShopModelDatasource;
 import co.mcsky.townyportal.data.ShopModelFileHandler;
 import co.mcsky.townyportal.data.TownModelDatasource;
@@ -10,23 +12,61 @@ import co.mcsky.townyportal.listener.TownListener;
 import de.themoep.utils.lang.bukkit.LanguageManager;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 public class TownyPortal extends ExtendedJavaPlugin {
 
     public static TownyPortal plugin;
-    public TownyPortalConfig config;
 
-    private LanguageManager lang;
-
+    private TownyPortalConfig config;
+    private LanguageManager languageManager;
+    private TextRepository textRepository;
     private TownModelFileHandler townModelFileHandler;
     private ShopModelFileHandler shopModelFileHandler;
     private TownModelDatasource townModelDatasource;
     private ShopModelDatasource shopModelDatasource;
+
+    public static Logger logger() {
+        return plugin.getLogger();
+    }
+
+    public static TownyPortalConfig config() {
+        return plugin.config;
+    }
+
+    public static TownModelDatasource townModelDatasource() {
+        return plugin.townModelDatasource;
+    }
+
+    public static ShopModelDatasource shopModelDatasource() {
+        return plugin.shopModelDatasource;
+    }
+
+    public static String text(String key, Object... replacements) {
+        if (replacements.length == 0) {
+            return plugin.languageManager.getDefaultConfig().get(key);
+        } else {
+            String[] list = new String[replacements.length];
+            for (int i = 0; i < replacements.length; i++) {
+                if (replacements[i] instanceof Double d) {
+                    list[i] = BigDecimal.valueOf(d).setScale(3, RoundingMode.HALF_UP).toPlainString();
+                } else {
+                    list[i] = replacements[i].toString();
+                }
+            }
+            return plugin.languageManager.getDefaultConfig().get(key, list);
+        }
+    }
+
+    public static Text text3(String key) {
+        return plugin.textRepository.get(key);
+    }
 
     @Override
     protected void enable() {
@@ -47,8 +87,8 @@ public class TownyPortal extends ExtendedJavaPlugin {
 
         // schedule task to save data periodically
         Schedulers.async().runRepeating(() -> {
-            townModelFileHandler.save(getTownModelDatasource());
-            shopModelFileHandler.save(getShopModelDatasource());
+            townModelFileHandler.save(townModelDatasource());
+            shopModelFileHandler.save(shopModelDatasource());
             getLogger().info("Datasource saved successfully!");
         }, 5, TimeUnit.SECONDS, this.config.save_interval, TimeUnit.SECONDS).bindWith(this);
 
@@ -68,64 +108,36 @@ public class TownyPortal extends ExtendedJavaPlugin {
         plugin.config.load();
     }
 
-    public void registerCommands() {
+    private void registerCommands() {
         PaperCommandManager commands = new PaperCommandManager(this);
         commands.registerCommand(new TownyPortalCommands(commands));
     }
 
-    public void loadLanguages() {
-        this.lang = new LanguageManager(this, "languages", "zh");
-        this.lang.setPlaceholderPrefix("{");
-        this.lang.setPlaceholderSuffix("}");
-        this.lang.setProvider(sender -> {
+    private void loadLanguages() {
+        this.languageManager = new LanguageManager(this, "languages", "zh");
+        this.languageManager.setPlaceholderPrefix("{");
+        this.languageManager.setPlaceholderSuffix("}");
+        this.languageManager.setProvider(sender -> {
             if (sender instanceof Player) {
                 return ((Player) sender).locale().getLanguage();
             }
             return null;
         });
-    }
-
-    public String message(CommandSender sender, String key, Object... replacements) {
-        if (replacements.length == 0) {
-            return lang.getConfig(sender).get(key);
-        } else {
-            String[] list = new String[replacements.length];
-            for (int i = 0; i < replacements.length; i++) {
-                list[i] = replacements[i].toString();
-            }
-            return lang.getConfig(sender).get(key, list);
-        }
-    }
-
-    public String message(String key, Object... replacements) {
-        return message(plugin.getServer().getConsoleSender(), key, replacements);
-    }
-
-    public TownModelDatasource getTownModelDatasource() {
-        return townModelDatasource;
-    }
-
-    public ShopModelDatasource getShopModelDatasource() {
-        return shopModelDatasource;
-    }
-
-    public boolean isDebugMode() {
-        return config.debug;
+        textRepository = new TextRepository(TownyPortal::text);
     }
 
     /**
-     * Loads the data source from file.
-     * <p>
-     * CAUTION: This will overwrite all the data in the memory!
+     * Loads the data source from file, overwriting the data in memory.
      */
     public void loadDatasource() {
-        // TODO async IO
         townModelDatasource = townModelFileHandler.load().orElseGet(TownModelDatasource::new);
         shopModelDatasource = shopModelFileHandler.load().orElseGet(ShopModelDatasource::new);
     }
 
+    /**
+     * Saves the data into file, overwriting all the contents in the file.
+     */
     public void saveDatasource() {
-        // TODO async IO
         townModelFileHandler.saveAndBackup(townModelDatasource);
         shopModelFileHandler.saveAndBackup(shopModelDatasource);
     }

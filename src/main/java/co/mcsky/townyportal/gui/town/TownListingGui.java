@@ -13,7 +13,7 @@ public class TownListingGui extends SeamlessGui {
     public static final MetadataKey<Town> CHOSEN_TOWN_KEY = MetadataKey.create("chosen-town", Town.class);
 
     public TownListingGui(Player player) {
-        super(player, 6, TownyPortal.plugin.message(player, "gui.town-listing.title"), TownListingView::new);
+        super(player, 6, TownyPortal.text("gui.town-listing.title"), TownListingView::new);
         SoundRegistry.bindClickingSound(this);
         SoundRegistry.bindOpeningSound(this);
     }

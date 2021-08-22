@@ -9,7 +9,7 @@ public class ShopListingGui extends SeamlessGui {
 
     public ShopListingGui(Player player, String shopType) {
         super(player, 6,
-                TownyPortal.plugin.message(player, "gui.shop-listing.title"),
+                TownyPortal.text("gui.shop-listing.title"),
                 gui -> new ShopListingFilterView(gui, shopType));
         SoundRegistry.bindClickingSound(this);
         SoundRegistry.bindOpeningSound(this);

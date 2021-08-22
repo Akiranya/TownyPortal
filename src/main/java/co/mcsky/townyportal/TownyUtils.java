@@ -36,7 +36,7 @@ public class TownyUtils {
             Preconditions.checkNotNull(resident, "resident");
 
             final long hoursSinceRegistered = TimeUnit.of(ChronoUnit.MILLIS).toHours(System.currentTimeMillis() - resident.getRegistered());
-            if (TownyPortal.plugin.config.bypass_private_town_enabled || hoursSinceRegistered < TownyPortal.plugin.config.bypass_private_town_duration) {
+            if (TownyPortal.config().bypass_private_town_enabled || hoursSinceRegistered < TownyPortal.config().bypass_private_town_duration) {
                 // bypass, or the player joined the server within X hours
                 player.teleportAsync(town.getSpawn());
             } else {
@@ -59,7 +59,7 @@ public class TownyUtils {
         if (resident == null || !resident.hasTown()) return Optional.empty();
         try {
             UUID uuid = resident.getTown().getUUID();
-            return Optional.of(TownyPortal.plugin.getTownModelDatasource().getTownModel(uuid));
+            return Optional.of(TownyPortal.townModelDatasource().getTownModel(uuid));
         } catch (NotRegisteredException e) {
             return Optional.empty();
         }
@@ -70,7 +70,7 @@ public class TownyUtils {
         if (resident == null || !resident.hasTown()) return null;
         try {
             UUID townUuid = resident.getTown().getUUID();
-            return TownyPortal.plugin.getTownModelDatasource().getTownModel(townUuid);
+            return TownyPortal.townModelDatasource().getTownModel(townUuid);
         } catch (NotRegisteredException e) {
             return null;
         }

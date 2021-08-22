@@ -36,7 +36,7 @@ public class TownModel {
 
     public List<String> getTownBoard() {
         if (townBoard.isEmpty()) {
-            return List.of(TownyPortal.plugin.message("gui.town-listing.town-entry.default-board"));
+            return List.of(TownyPortal.text("gui.town-listing.town-entry.default-board"));
         }
         return townBoard;
     }

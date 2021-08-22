@@ -36,8 +36,7 @@ public class ShopListener implements TerminableModule {
             }
 
             Location sign = e.getSign();
-            if ((TownyPortal.plugin.config.shop_must_inside_plots && TownyUtils.isInWilderness(sign))
-                    || (TownyPortal.plugin.config.shop_must_inside_shop_plots && !TownyUtils.isInsideShopPlot(sign))) {
+            if ((TownyPortal.config().shop_must_inside_plots && TownyUtils.isInWilderness(sign)) || (TownyPortal.config().shop_must_inside_shop_plots && !TownyUtils.isInsideShopPlot(sign))) {
                 e.disallow();
                 return;
             }
@@ -54,9 +53,9 @@ public class ShopListener implements TerminableModule {
             if (town == null) return;
 
             // increment shop num
-            if (TownyPortal.plugin.isDebugMode())
-                TownyPortal.plugin.getLogger().info("Town %s's shop num increment".formatted(town.getName()));
-            TownModel townModel = TownyPortal.plugin.getTownModelDatasource().getTownModel(town.getUUID());
+            if (TownyPortal.config().debug)
+                TownyPortal.logger().info("Town %s's shop num increment".formatted(town.getName()));
+            TownModel townModel = TownyPortal.townModelDatasource().getTownModel(town.getUUID());
             townModel.incrementShopNum();
         }).bindWith(consumer);
 
@@ -70,9 +69,9 @@ public class ShopListener implements TerminableModule {
             if (town == null) return;
 
             // decrement shop num
-            if (TownyPortal.plugin.isDebugMode())
-                TownyPortal.plugin.getLogger().info("Town %s's shop num decrement".formatted(town.getName()));
-            TownModel townModel = TownyPortal.plugin.getTownModelDatasource().getTownModel(town.getUUID());
+            if (TownyPortal.config().debug)
+                TownyPortal.logger().info("Town %s's shop num decrement".formatted(town.getName()));
+            TownModel townModel = TownyPortal.townModelDatasource().getTownModel(town.getUUID());
             townModel.decrementShopNum();
         }).bindWith(consumer);
 
@@ -85,20 +84,20 @@ public class ShopListener implements TerminableModule {
 
                     final Town town = townyAPI.getTown(signLocation);
                     if (town == null) {
-                        if (TownyPortal.plugin.isDebugMode()) {
-                            TownyPortal.plugin.getLogger().info("Adding shop model aborted: null town");
+                        if (TownyPortal.config().debug) {
+                            TownyPortal.logger().info("Adding shop model aborted: null town");
                         }
                         return;
                     }
 
                     final ShopModel shopModel = new ShopModel(town.getUUID(), e.getPlayer().getUniqueId(), e.getPlayer().getName(), e.getSignLines(), sign.getLocation());
-                    TownyPortal.plugin.getShopModelDatasource().addShopModel(shopModel);
+                    TownyPortal.shopModelDatasource().addShopModel(shopModel);
 
                     // refresh item cache immediately
                     ShopItemCache.refresh(shopModel);
 
-                    if (TownyPortal.plugin.isDebugMode()) {
-                        TownyPortal.plugin.getLogger().info("Added shop model to datasource successfully");
+                    if (TownyPortal.config().debug) {
+                        TownyPortal.logger().info("Added shop model to datasource successfully");
                     }
                 }).bindWith(consumer);
 
@@ -108,14 +107,14 @@ public class ShopListener implements TerminableModule {
                 .handler(e -> {
                     final Sign sign = e.getSign();
                     final Location signLocation = sign.getBlock().getLocation();
-                    TownyPortal.plugin.getShopModelDatasource().removeShopModel(signLocation);
+                    TownyPortal.shopModelDatasource().removeShopModel(signLocation);
 
                     // no need to invalidate cache
                     // because we always refresh cache when sign shop is created
                     // also, the cache will expire!
 
-                    if (TownyPortal.plugin.isDebugMode()) {
-                        TownyPortal.plugin.getLogger().info("Removed shop model from datasource");
+                    if (TownyPortal.config().debug) {
+                        TownyPortal.logger().info("Removed shop model from datasource");
                     }
                 }).bindWith(consumer);
     }

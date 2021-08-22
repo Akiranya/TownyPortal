@@ -39,7 +39,7 @@ public abstract class ShopListingAbstractView extends PaginatedView {
     }
 
     public void updateContent(Predicate<ShopModel> filter) {
-        List<Item> content = TownyPortal.plugin.getShopModelDatasource()
+        List<Item> content = TownyPortal.shopModelDatasource()
                 .getShopList()
                 .stream()
                 .filter(filter)
@@ -82,18 +82,18 @@ public abstract class ShopListingAbstractView extends PaginatedView {
     @Override
     public Function<PageInfo, ItemStack> nextPageItem() {
         return pageInfo -> ItemStackBuilder.of(Material.PAPER)
-                .name(TownyPortal.plugin.message("gui.shop-listing.next-page.name"))
-                .lore(TownyPortal.plugin.message("gui.shop-listing.next-page.lore1"))
-                .lore(TownyPortal.plugin.message("gui.shop-listing.next-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
+                .name(TownyPortal.text("gui.shop-listing.next-page.name"))
+                .lore(TownyPortal.text("gui.shop-listing.next-page.lore1"))
+                .lore(TownyPortal.text("gui.shop-listing.next-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
                 .build();
     }
 
     @Override
     public Function<PageInfo, ItemStack> previousPageItem() {
         return pageInfo -> ItemStackBuilder.of(Material.PAPER)
-                .name(TownyPortal.plugin.message("gui.shop-listing.previous-page.name"))
-                .lore(TownyPortal.plugin.message("gui.shop-listing.previous-page.lore1"))
-                .lore(TownyPortal.plugin.message("gui.shop-listing.previous-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
+                .name(TownyPortal.text("gui.shop-listing.previous-page.name"))
+                .lore(TownyPortal.text("gui.shop-listing.previous-page.lore1"))
+                .lore(TownyPortal.text("gui.shop-listing.previous-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
                 .build();
     }
 
