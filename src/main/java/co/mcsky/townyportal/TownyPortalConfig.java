@@ -20,7 +20,6 @@ public class TownyPortalConfig {
 
     public boolean shop_must_inside_plots;
     public boolean shop_must_inside_shop_plots;
-    public int shop_icon_cache_timeout;
 
     public int town_board_max_line;
     public int resident_name_num_per_line;
@@ -49,8 +48,7 @@ public class TownyPortalConfig {
         debug = root.node("debug").getBoolean(false);
         save_interval = root.node("save-interval").getInt(1800);
         shop_must_inside_plots = root.node("shop-must-inside-plots").getBoolean(true);
-        shop_must_inside_shop_plots = root.node("shop-must-inside-shop-plots").getBoolean(true);
-        shop_icon_cache_timeout = root.node("shop-icon-cache-timeout").getInt(600);
+        shop_must_inside_shop_plots = root.node("shop-must-inside-shop-plots").getBoolean(false);
 
         town_board_max_line = root.node("town-board-max-line").getInt(4);
         resident_name_num_per_line = root.node("resident-num-per-line").getInt(4);

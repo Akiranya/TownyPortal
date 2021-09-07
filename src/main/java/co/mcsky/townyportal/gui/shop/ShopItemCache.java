@@ -15,7 +15,6 @@ public class ShopItemCache {
 
     static {
         shopIconCache = CacheBuilder.newBuilder()
-                .expireAfterAccess(TownyPortal.config().shop_icon_cache_timeout, TimeUnit.SECONDS)
                 .build(CacheLoader.from(model -> ItemStackBuilder.of(model.getItem())
                         .lore(TownyPortal.text("gui.shop-listing.shop-icon.break-line"))
                         // owner line
