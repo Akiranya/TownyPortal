@@ -15,8 +15,6 @@ import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -54,11 +52,7 @@ public class TownyPortal extends ExtendedJavaPlugin {
         } else {
             String[] list = new String[replacements.length];
             for (int i = 0; i < replacements.length; i++) {
-                if (replacements[i] instanceof Double d) {
-                    list[i] = BigDecimal.valueOf(d).setScale(3, RoundingMode.HALF_UP).toPlainString();
-                } else {
-                    list[i] = replacements[i].toString();
-                }
+                list[i] = replacements[i].toString();
             }
             return plugin.languageManager.getDefaultConfig().get(key, list);
         }
