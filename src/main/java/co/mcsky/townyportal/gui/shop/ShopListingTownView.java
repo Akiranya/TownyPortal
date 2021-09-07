@@ -9,6 +9,10 @@ import org.bukkit.Material;
 
 import java.util.UUID;
 
+/**
+ * This view is displayed when player clicks the "shop list" icon in {@link
+ * co.mcsky.townyportal.gui.town.TownOptionView}.
+ */
 public class ShopListingTownView extends ShopListingAbstractView {
 
     private static final MenuScheme BACK = new MenuScheme()

@@ -22,9 +22,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * This view is displayed when player runs "/towns".
+ */
 public class TownListingView extends PaginatedView {
 
     private static final MenuScheme POSTER = new MenuScheme().mask("000010000");
+    private static final MenuScheme BACK = new MenuScheme().maskEmpty(5).mask("000000001");
 
     // the backed GUI
     private final SeamlessGui gui;
@@ -59,22 +63,27 @@ public class TownListingView extends PaginatedView {
                 .lore(TownyPortal.text("gui.town-listing.menu-tips.lore3"))
                 .lore(TownyPortal.text("gui.town-listing.menu-tips.lore4"))
                 .buildItem().build());
+        // place back button
+        BACK.newPopulator(this.gui).accept(ItemStackBuilder.of(Material.REDSTONE)
+                .name(TownyPortal.text("gui.back-icon.name"))
+                .lore(TownyPortal.text("gui.back-icon.lore1"))
+                .build(() -> this.gui.getPlayer().performCommand(TownyPortal.config().town_listing_back_command)));
     }
 
     @Override
     public MenuScheme backgroundSchema() {
         return new MenuScheme(StandardSchemeMappings.STAINED_GLASS)
                 .mask("111111111")
-                .mask("110000011")
-                .mask("110000011")
-                .mask("110000011")
-                .mask("110000011")
+                .mask("100000001")
+                .mask("100000001")
+                .mask("100000001")
+                .mask("100000001")
                 .mask("111111111")
                 .scheme(15, 15, 15, 15, 15, 15, 15, 15, 15)
-                .scheme(15, 15, 15, 15)
-                .scheme(15, 15, 15, 15)
-                .scheme(15, 15, 15, 15)
-                .scheme(15, 15, 15, 15)
+                .scheme(15, 15)
+                .scheme(15, 15)
+                .scheme(15, 15)
+                .scheme(15, 15)
                 .scheme(15, 15, 15, 15, 15, 15, 15, 15, 15);
     }
 
@@ -82,7 +91,7 @@ public class TownListingView extends PaginatedView {
     public int nextPageSlot() {
         return new MenuScheme()
                 .maskEmpty(5)
-                .mask("000000100")
+                .mask("100000000")
                 .getMaskedIndexesImmutable().get(0);
     }
 
@@ -90,7 +99,7 @@ public class TownListingView extends PaginatedView {
     public int previousPageSlot() {
         return new MenuScheme()
                 .maskEmpty(5)
-                .mask("001000000")
+                .mask("010000000")
                 .getMaskedIndexesImmutable().get(0);
     }
 
@@ -116,10 +125,10 @@ public class TownListingView extends PaginatedView {
     public List<Integer> itemSlots() {
         return new MenuScheme()
                 .maskEmpty(1)
-                .mask("001111100")
-                .mask("001111100")
-                .mask("001111100")
-                .mask("001111100")
+                .mask("011111110")
+                .mask("011111110")
+                .mask("011111110")
+                .mask("011111110")
                 .getMaskedIndexesImmutable();
     }
 

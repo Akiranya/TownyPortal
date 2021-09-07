@@ -1,6 +1,9 @@
 gui:
   right: "&a&l是"
   wrong: "&c&l否"
+  back-icon:
+    name: "&c返回"
+    lore1: "&7返回上级菜单"
   shop-listing:
     title: "商店列表"
     shop-icon:
@@ -18,10 +21,10 @@ gui:
       lore1: "&6点击&7显示全部商店"
     filter-buy-shop:
       name: "&b&l筛选商店 &7:&e 只显示出售商店"
-      lore1: "&6点击&7只显示你可以购买东西的商店"
+      lore1: "&6点击&7显示你可以购买东西的商店"
     filter-sell-shop:
       name: "&b&l筛选商店 &7:&e 只显示收购商店"
-      lore1: "&6点击&7只显示你可以出售东西的商店"
+      lore1: "&6点击&7显示你可以出售东西的商店"
     next-page:
       name: "&8&l>>> &b&l查看下一页"
       lore1: ""

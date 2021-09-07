@@ -29,6 +29,9 @@ public class TownyPortalConfig {
 
     public String town_map_scale;
 
+    public String town_listing_back_command;
+    public String shop_listing_back_command;
+
     /* config nodes end */
 
     private CommentedConfigurationNode root;
@@ -65,6 +68,10 @@ public class TownyPortalConfig {
         final CommentedConfigurationNode townTeleportNode = root.node("town", "teleport");
         bypass_private_town_enabled = townTeleportNode.node("bypass-private-town-enabled").getBoolean(true);
         bypass_private_town_duration = townTeleportNode.node("bypass-private-town-duration").getInt(72);
+
+        final CommentedConfigurationNode guiNode = root.node("gui");
+        town_listing_back_command = guiNode.node("town-listing-back-command").getString("bossshop menu");
+        shop_listing_back_command = guiNode.node("shop-listing-back-command").getString("bossshop menu");
     }
 
     public void save() {
