@@ -24,10 +24,10 @@ import java.util.function.Function;
 
 public class TownListingView extends PaginatedView {
 
+    private static final MenuScheme POSTER = new MenuScheme().mask("000010000");
+
     // the backed GUI
     private final SeamlessGui gui;
-    private final MenuScheme POSTER = new MenuScheme().mask("000010000");
-
     // towny api instance
     private final TownyAPI towny;
 
@@ -52,7 +52,7 @@ public class TownListingView extends PaginatedView {
     @Override
     public void renderSubview() {
         // place the poster
-        this.POSTER.newPopulator(this.gui).accept(ItemStackBuilder.of(Material.NETHER_STAR)
+        POSTER.newPopulator(this.gui).accept(ItemStackBuilder.of(Material.NETHER_STAR)
                 .name(TownyPortal.text("gui.town-listing.menu-tips.name"))
                 .lore(TownyPortal.text("gui.town-listing.menu-tips.lore1"))
                 .lore(TownyPortal.text("gui.town-listing.menu-tips.lore2"))

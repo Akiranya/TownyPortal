@@ -28,10 +28,7 @@ import java.util.List;
 public class TownOptionView implements GuiView {
 
     private static final String skin = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmFkNzBhYTMzNWVlYTNlNDY2Zjk2N2MyM2JhNTFlYjgyNzY1YTkwNzIwYzkwOTZiNzBmOGIxYzY1ZmMyYzc3MCJ9fX0=";
-
-    private final SeamlessGui gui;
-
-    private final MenuScheme BACKGROUND = new MenuScheme(StandardSchemeMappings.STAINED_GLASS)
+    private static final MenuScheme BACKGROUND = new MenuScheme(StandardSchemeMappings.STAINED_GLASS)
             .mask("111111111")
             .mask("101111111")
             .mask("101000001")
@@ -44,18 +41,20 @@ public class TownOptionView implements GuiView {
             .scheme(15, 15, 15, 15, 15, 15)
             .scheme(15, 15, 15, 15, 15, 15, 15, 15, 15)
             .scheme(15, 15, 15, 15, 15, 15, 15, 15, 15);
-    private final MenuScheme LEFT_OPTIONS = new MenuScheme()
+    private static final MenuScheme LEFT_OPTIONS = new MenuScheme()
             .maskEmpty(1)
             .mask("010000000")
             .mask("010000000")
             .mask("010000000");
-    private final MenuScheme RIGHT_OPTIONS = new MenuScheme()
+    private static final MenuScheme RIGHT_OPTIONS = new MenuScheme()
             .maskEmpty(2)
             .mask("000111110")
             .mask("000111110");
-    private final MenuScheme BACK_BUTTON = new MenuScheme()
+    private static final MenuScheme BACK_BUTTON = new MenuScheme()
             .maskEmpty(5)
             .mask("000010000");
+
+    private final SeamlessGui gui;
 
     // the parent view
     private final GuiView parentView;
@@ -76,9 +75,9 @@ public class TownOptionView implements GuiView {
         Player player = this.gui.getPlayer();
 
         // place background
-        this.BACKGROUND.apply(this.gui);
+        BACKGROUND.apply(this.gui);
 
-        MenuPopulator leftOptionPopulator = this.LEFT_OPTIONS.newPopulator(this.gui);
+        MenuPopulator leftOptionPopulator = LEFT_OPTIONS.newPopulator(this.gui);
 
         // check out shops
         leftOptionPopulator.accept(ItemStackBuilder.of(Material.GOLD_INGOT)
@@ -116,7 +115,7 @@ public class TownOptionView implements GuiView {
                     }
                 }));
 
-        MenuPopulator rightOptionPopulator = this.RIGHT_OPTIONS.newPopulator(this.gui);
+        MenuPopulator rightOptionPopulator = RIGHT_OPTIONS.newPopulator(this.gui);
 
         // place right option: town level
         rightOptionPopulator.accept(ItemStackBuilder.of(Material.EMERALD)
@@ -197,7 +196,7 @@ public class TownOptionView implements GuiView {
                 .buildItem().build());
 
         // place back button
-        this.BACK_BUTTON.newPopulator(this.gui).accept(ItemStackBuilder.of(Material.REDSTONE)
+        BACK_BUTTON.newPopulator(this.gui).accept(ItemStackBuilder.of(Material.REDSTONE)
                 .name(TownyPortal.text("gui.town-options.back.name"))
                 .lore(TownyPortal.text("gui.town-options.back.lore1"))
                 .lore(TownyPortal.text("gui.town-options.back.lore2"))
