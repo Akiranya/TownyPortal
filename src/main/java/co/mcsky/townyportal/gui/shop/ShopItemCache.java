@@ -46,7 +46,7 @@ public class ShopItemCache {
     }
 
     public static void clear() {
-        shopIconCache.cleanUp();
+        shopIconCache.invalidateAll();
     }
 
 }
