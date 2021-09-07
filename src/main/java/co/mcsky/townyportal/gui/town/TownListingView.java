@@ -139,12 +139,7 @@ public class TownListingView extends PaginatedView {
                 .lore(TownyPortal.townModelDatasource().getTownModel(town).getTownBoard())
                 .lore("")
                 .lore(TownyPortal.text("gui.town-listing.town-entry.lore3"))
-                .transform(item -> {
-                    if (town.getMayor() != null) {
-                        // hotfix: mayor is sometimes null, not sure why
-                        SkullCache.INSTANCE.itemWithUuid(item, town.getMayor().getUUID());
-                    }
-                })
+                .transform(item -> SkullCache.INSTANCE.itemWithUuid(item, town.getMayor().getUUID()))
                 .build(() -> {
                     Metadata.provideForPlayer(gui.getPlayer()).put(TownListingGui.CHOSEN_TOWN_KEY, town);
                     gui.switchView(new TownOptionView(gui, this));
