@@ -6,6 +6,7 @@ import co.aikar.commands.PaperCommandManager;
 import co.aikar.commands.annotation.*;
 import co.mcsky.townyportal.data.TownModel;
 import co.mcsky.townyportal.gui.shop.ShopListingGui;
+import co.mcsky.townyportal.gui.shop.ShopUtils;
 import co.mcsky.townyportal.gui.town.TownListingGui;
 import co.mcsky.townyportal.util.TownMapBuilder;
 import com.google.common.base.Preconditions;
@@ -70,6 +71,11 @@ public class TownyPortalCommands extends BaseCommand {
     @CommandCompletion("@shop-type")
     public void openShopGui(Player player, String shopType) {
         new ShopListingGui(player, shopType.trim().toLowerCase()).open();
+    }
+
+    @Subcommand("warps set")
+    public void setShopWarp(Player player) {
+        ShopUtils.setShopWarp(player);
     }
 
     @Subcommand("map")

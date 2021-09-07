@@ -2,7 +2,7 @@ gui:
   right: "&a&l是"
   wrong: "&c&l否"
   shop-listing:
-    title: "玩家商店列表 - 快捷指令 /ts shops"
+    title: "商店列表"
     shop-icon:
       unavailable: "&8不可用"
       break-line: "&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-&7-&e-"
@@ -12,19 +12,16 @@ gui:
       lore3-unavailable: "&b正在出售 &7: &8该商店不支持"
       lore4: "&b正在收购 &7: &8每 &e{amount} &8个 &7/ &e{sell_price} &8软妹币"
       lore4-unavailable: "&b正在收购 &7: &8该商店不支持"
-      lore5: " &7&l>>&6 点击传送到商店所在城镇传送点"
+      lore5: " &7&l>>&6 点击传送到商店"
     filter-all-shop:
       name: "&b&l筛选商店 &7:&e 显示全部"
       lore1: "&6点击&7显示全部商店"
-      lore2: "&7你也许可以出售/收购"
     filter-buy-shop:
       name: "&b&l筛选商店 &7:&e 只显示出售商店"
       lore1: "&6点击&7只显示你可以购买东西的商店"
-      lore2: "&7在这些商店, 你可以花软妹币买到东西"
     filter-sell-shop:
       name: "&b&l筛选商店 &7:&e 只显示收购商店"
       lore1: "&6点击&7只显示你可以出售东西的商店"
-      lore2: "&7在这些商店, 你可以出售东西赚软妹币"
     next-page:
       name: "&8&l>>> &b&l查看下一页"
       lore1: ""
@@ -39,7 +36,7 @@ gui:
       name: "&7欢迎来到 &b服务器城镇列表 ( ´ ▽ ` )ﾉ"
       lore1: "&7"
       lore2: "&a在这里你可以查看服务器当前活跃的城镇!"
-      lore3: "&a可以选择去参观, 游玩亦或是加入他们!"
+      lore3: "&a可以选择去参观, 游玩, 或者加入他们!"
       lore4: "&7"
     town-entry:
       default-board: "&8[&7镇长可以使用 &e/ts board&7 修改本信息&8]"
@@ -137,4 +134,6 @@ town-map:
   map-title: "&b{town}&d 城的地图"
   already-obtained: "&7你已经拿到过 {town} 城的地图了, 冷却: {timeout}m"
   get-map-success: "&7你获得了 {town} 城的地图."
-
+shop-teleport:
+  no-town-here: "&c你不在城镇领地里."
+  illegal-town-name: "&c城镇名只能是英文."

@@ -37,7 +37,7 @@ public class TownyUtils {
 
             final long hoursSinceRegistered = TimeUnit.of(ChronoUnit.MILLIS).toHours(System.currentTimeMillis() - resident.getRegistered());
             if (TownyPortal.config().bypass_private_town_enabled || hoursSinceRegistered < TownyPortal.config().bypass_private_town_duration) {
-                // bypass, or the player joined the server within X hours
+                // simply bypass, or less X hours since the player joined the server
                 player.teleportAsync(town.getSpawn());
             } else {
                 // the player is a senior

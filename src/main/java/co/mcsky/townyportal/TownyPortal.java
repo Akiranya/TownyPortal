@@ -7,11 +7,13 @@ import co.mcsky.townyportal.data.ShopModelDatasource;
 import co.mcsky.townyportal.data.ShopModelFileHandler;
 import co.mcsky.townyportal.data.TownModelDatasource;
 import co.mcsky.townyportal.data.TownModelFileHandler;
+import co.mcsky.townyportal.gui.shop.ShopItemCache;
 import co.mcsky.townyportal.listener.ShopListener;
 import co.mcsky.townyportal.listener.TownListener;
 import de.themoep.utils.lang.bukkit.LanguageManager;
 import me.lucko.helper.Schedulers;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
+import net.ess3.api.IEssentials;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -29,6 +31,8 @@ public class TownyPortal extends ExtendedJavaPlugin {
     private ShopModelFileHandler shopModelFileHandler;
     private TownModelDatasource townModelDatasource;
     private ShopModelDatasource shopModelDatasource;
+
+    private IEssentials essentials;
 
     public static Logger logger() {
         return plugin.getLogger();
@@ -62,6 +66,10 @@ public class TownyPortal extends ExtendedJavaPlugin {
         return plugin.textRepository.get(key);
     }
 
+    public static IEssentials essentials() {
+        return plugin.essentials;
+    }
+
     @Override
     protected void enable() {
         plugin = this;
@@ -69,6 +77,13 @@ public class TownyPortal extends ExtendedJavaPlugin {
         this.config = new TownyPortalConfig();
         this.config.load();
         this.config.save();
+
+        // load essentials
+        if ((essentials = getPlugin("Essentials", IEssentials.class)) == null) {
+            getLogger().severe("Essentials is not loaded");
+            disable();
+            return;
+        }
 
         loadLanguages();
         registerCommands();
@@ -86,6 +101,7 @@ public class TownyPortal extends ExtendedJavaPlugin {
             getLogger().info("Datasource saved successfully!");
         }, 5, TimeUnit.SECONDS, this.config.save_interval, TimeUnit.SECONDS).bindWith(this);
 
+
         // register listeners
         bindModule(new TownListener());
         bindModule(new ShopListener());
@@ -100,6 +116,7 @@ public class TownyPortal extends ExtendedJavaPlugin {
     public void reload() {
         plugin.loadLanguages();
         plugin.config.load();
+        ShopItemCache.clear();
     }
 
     private void registerCommands() {
@@ -118,6 +135,10 @@ public class TownyPortal extends ExtendedJavaPlugin {
             return null;
         });
         textRepository = new TextRepository(TownyPortal::text);
+    }
+
+    private void hookExternal() {
+
     }
 
     /**

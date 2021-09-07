@@ -7,8 +7,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import me.lucko.helper.item.ItemStackBuilder;
 
-import java.util.concurrent.TimeUnit;
-
 public class ShopItemCache {
 
     private static final LoadingCache<ShopModel, ItemStackBuilder> shopIconCache;
@@ -40,6 +38,10 @@ public class ShopItemCache {
 
     public static void refresh(ShopModel model) {
         shopIconCache.refresh(model);
+    }
+
+    public static void clear() {
+        shopIconCache.cleanUp();
     }
 
 }

@@ -3,7 +3,6 @@ package co.mcsky.townyportal.gui.shop;
 import co.mcsky.moecore.gui.PaginatedView;
 import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.townyportal.TownyPortal;
-import co.mcsky.townyportal.TownyUtils;
 import co.mcsky.townyportal.data.ShopModel;
 import me.lucko.helper.item.ItemStackBuilder;
 import me.lucko.helper.menu.Item;
@@ -48,8 +47,8 @@ public abstract class ShopListingAbstractView extends PaginatedView {
         updateContent(content);
     }
 
-    public Item getShopIcon(ShopModel s) {
-        return ShopItemCache.get(s).build(() -> TownyUtils.friendlyTownSpawn(gui.getPlayer(), s.getTown()));
+    public Item getShopIcon(ShopModel shopModel) {
+        return ShopItemCache.get(shopModel).build(() -> ShopUtils.teleport(gui.getPlayer(), shopModel));
     }
 
     @Override

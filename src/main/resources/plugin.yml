@@ -4,4 +4,4 @@ version: ${version}
 api-version: 1.17
 author: Nailm
 website: https://mimaru.me
-depend: [ MoeCore, helper, Towny, ChestShop ]
+depend: [ MoeCore, helper, Essentials, Towny, ChestShop ]

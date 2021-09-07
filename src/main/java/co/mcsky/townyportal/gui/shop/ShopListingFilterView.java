@@ -27,7 +27,6 @@ public class ShopListingFilterView extends ShopListingAbstractView {
         FILTER_BUY_SHOP.newPopulator(gui).accept(ItemStackBuilder.of(Material.SPYGLASS)
                 .name(TownyPortal.text("gui.shop-listing.filter-buy-shop.name"))
                 .lore(TownyPortal.text("gui.shop-listing.filter-buy-shop.lore1"))
-                .lore(TownyPortal.text("gui.shop-listing.filter-buy-shop.lore2"))
                 .build(() -> {
                     updateContent(ShopFilters.BUY());
                     render();
@@ -35,7 +34,6 @@ public class ShopListingFilterView extends ShopListingAbstractView {
         FILTER_SELL_SHOP.newPopulator(gui).accept(ItemStackBuilder.of(Material.SPYGLASS)
                 .name(TownyPortal.text("gui.shop-listing.filter-sell-shop.name"))
                 .lore(TownyPortal.text("gui.shop-listing.filter-sell-shop.lore1"))
-                .lore(TownyPortal.text("gui.shop-listing.filter-sell-shop.lore2"))
                 .build(() -> {
                     updateContent(ShopFilters.SELL());
                     render();
@@ -43,7 +41,6 @@ public class ShopListingFilterView extends ShopListingAbstractView {
         FILTER_ALL_SHOP.newPopulator(gui).accept(ItemStackBuilder.of(Material.SPYGLASS)
                 .name(TownyPortal.text("gui.shop-listing.filter-all-shop.name"))
                 .lore(TownyPortal.text("gui.shop-listing.filter-all-shop.lore1"))
-                .lore(TownyPortal.text("gui.shop-listing.filter-all-shop.lore2"))
                 .build(() -> {
                     updateContent(ShopFilters.ALL());
                     render();
