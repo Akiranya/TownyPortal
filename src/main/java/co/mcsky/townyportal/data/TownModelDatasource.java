@@ -2,6 +2,7 @@ package co.mcsky.townyportal.data;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,10 @@ public class TownModelDatasource {
         TownModel added = new TownModel(townUUID);
         townModelMap.put(townUUID, added);
         return added;
+    }
+
+    public TownModel getTownModel(@NotNull Town town) {
+        return getTownModel(town.getUUID());
     }
 
     public Map<UUID, TownModel> getTownModelMap() {

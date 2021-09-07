@@ -16,6 +16,8 @@ import me.lucko.helper.menu.scheme.StandardSchemeMappings;
 import me.lucko.helper.metadata.Metadata;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Function;
@@ -126,17 +128,23 @@ public class TownListingView extends PaginatedView {
         updateContent(content);
     }
 
-    private Item townIcon(Town town) {
+    @Contract("_ -> new")
+    private @NotNull Item townIcon(@NotNull Town town) {
         return ItemStackBuilder.of(Material.PLAYER_HEAD)
                 .name(TownyPortal.text("gui.town-listing.town-entry.name", "town_name", town.getName()))
                 .lore("")
                 .lore(TownyPortal.text("gui.town-listing.town-entry.lore1", "mayor_name", town.getMayor().getName()))
-                .lore(TownyPortal.text("gui.town-listing.town-entry.lore2", "shop_num", TownyPortal.townModelDatasource().getTownModel(town.getUUID()).getShopNum()))
+                .lore(TownyPortal.text("gui.town-listing.town-entry.lore2", "shop_num", TownyPortal.townModelDatasource().getTownModel(town).getShopNum()))
                 .lore("")
-                .lore(TownyPortal.townModelDatasource().getTownModel(town.getUUID()).getTownBoard())
+                .lore(TownyPortal.townModelDatasource().getTownModel(town).getTownBoard())
                 .lore("")
                 .lore(TownyPortal.text("gui.town-listing.town-entry.lore3"))
-                .transform(item -> SkullCache.INSTANCE.itemWithUuid(item, town.getMayor().getUUID()))
+                .transform(item -> {
+                    if (town.getMayor() != null) {
+                        // hotfix: mayor is sometimes null, not sure why
+                        SkullCache.INSTANCE.itemWithUuid(item, town.getMayor().getUUID());
+                    }
+                })
                 .build(() -> {
                     Metadata.provideForPlayer(gui.getPlayer()).put(TownListingGui.CHOSEN_TOWN_KEY, town);
                     gui.switchView(new TownOptionView(gui, this));
