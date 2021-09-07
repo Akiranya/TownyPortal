@@ -5,6 +5,7 @@ import co.mcsky.townyportal.data.ShopModel;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.palmergames.bukkit.towny.object.Town;
 import me.lucko.helper.item.ItemStackBuilder;
 
 public class ShopItemCache {
@@ -13,23 +14,27 @@ public class ShopItemCache {
 
     static {
         shopIconCache = CacheBuilder.newBuilder()
-                .build(CacheLoader.from(model -> ItemStackBuilder.of(model.getItem())
-                        .lore(TownyPortal.text("gui.shop-listing.shop-icon.break-line"))
-                        // owner line
-                        .lore(TownyPortal.text("gui.shop-listing.shop-icon.lore1", "owner", model.ownerName()))
-                        // town line
-                        .lore(TownyPortal.text("gui.shop-listing.shop-icon.lore2", "town", model.getTown().getName()))
-                        // buy price line
-                        .lore(model.hasBuyPrice()
-                                ? TownyPortal.text("gui.shop-listing.shop-icon.lore3", "amount", model.getQuantity(), "buy_price", model.getBuyPrice())
-                                : TownyPortal.text("gui.shop-listing.shop-icon.lore3-unavailable"))
-                        // sell price line
-                        .lore(model.hasSellPrice()
-                                ? TownyPortal.text("gui.shop-listing.shop-icon.lore4", "amount", model.getQuantity(), "sell_price", model.getSellPrice())
-                                : TownyPortal.text("gui.shop-listing.shop-icon.lore4-unavailable"))
-                        .lore(TownyPortal.text("gui.shop-listing.shop-icon.break-line"))
-                        // "click me" line
-                        .lore(TownyPortal.text("gui.shop-listing.shop-icon.lore5"))));
+                .build(CacheLoader.from(model -> {
+                    final Town town = model.getTown();
+                    String townName;
+                    if (town != null) {
+                        townName = town.getName();
+                    } else {
+                        townName = "NULL";
+                    }
+                    return ItemStackBuilder.of(model.getItem())
+                            .lore(TownyPortal.text("gui.shop-listing.shop-icon.break-line"))
+                            .lore(TownyPortal.text("gui.shop-listing.shop-icon.lore1", "owner", model.ownerName()))
+                            .lore(TownyPortal.text("gui.shop-listing.shop-icon.lore2", "town", townName))
+                            .lore(model.hasBuyPrice()
+                                    ? TownyPortal.text("gui.shop-listing.shop-icon.lore3", "amount", model.getQuantity(), "buy_price", model.getBuyPrice())
+                                    : TownyPortal.text("gui.shop-listing.shop-icon.lore3-unavailable"))
+                            .lore(model.hasSellPrice()
+                                    ? TownyPortal.text("gui.shop-listing.shop-icon.lore4", "amount", model.getQuantity(), "sell_price", model.getSellPrice())
+                                    : TownyPortal.text("gui.shop-listing.shop-icon.lore4-unavailable"))
+                            .lore(TownyPortal.text("gui.shop-listing.shop-icon.break-line"))
+                            .lore(TownyPortal.text("gui.shop-listing.shop-icon.lore5"));
+                }));
     }
 
     public static ItemStackBuilder get(ShopModel model) {

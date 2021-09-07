@@ -34,7 +34,7 @@ gui:
       lore1: ""
       lore2: "&7当前页 &b{current_page} &7/&b {total_page}"
   town-listing:
-    title: "服务器城镇列表 - 快捷指令 /ts"
+    title: "城镇列表"
     menu-tips:
       name: "&7欢迎来到 &b服务器城镇列表 ( ´ ▽ ` )ﾉ"
       lore1: "&7"

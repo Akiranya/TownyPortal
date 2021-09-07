@@ -1,11 +1,10 @@
 package co.mcsky.townyportal.data;
 
+import co.mcsky.townyportal.TownyPortal;
+import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Location;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ShopModelDatasource {
 
@@ -18,6 +17,9 @@ public class ShopModelDatasource {
     public ShopModelDatasource(List<ShopModel> shops) {
         this.shopMap = new HashMap<>();
         shops.forEach(s -> shopMap.put(s.location(), s));
+
+        // data cleanup: pass a null UUID so that it will only remove null towns
+        removeShopModel(UUID.fromString("00000000-0000-0000-0000-000000000000"));
     }
 
     public void setShops(List<ShopModel> shops) {
@@ -42,5 +44,17 @@ public class ShopModelDatasource {
 
     public void removeShopModel(Location signLocation) {
         shopMap.remove(signLocation);
+    }
+
+    public void removeShopModel(UUID townUUID) {
+        final Iterator<Map.Entry<Location, ShopModel>> iterator = shopMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            final Map.Entry<Location, ShopModel> next = iterator.next();
+            final Town town = next.getValue().getTown();
+            if (town == null || town.getUUID().equals(townUUID)) {
+                TownyPortal.logger().warning("[Data Cleanup] removing shop model (town UUID: %s)".formatted(townUUID));
+                iterator.remove();
+            }
+        }
     }
 }

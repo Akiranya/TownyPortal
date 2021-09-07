@@ -23,7 +23,7 @@ public class ShopListingTownView extends ShopListingAbstractView {
     public ShopListingTownView(GuiView parentView, SeamlessGui gui, UUID townUuid) {
         super(gui);
         this.parentView = parentView;
-        this.updateContent(s -> s.getTown().getUUID().equals(townUuid));
+        this.updateContent(s -> s.getTown() == null || s.getTown().getUUID().equals(townUuid));
     }
 
     @Override

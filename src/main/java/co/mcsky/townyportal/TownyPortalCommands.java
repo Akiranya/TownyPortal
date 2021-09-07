@@ -56,7 +56,7 @@ public class TownyPortalCommands extends BaseCommand {
     private void registerConditions() {
         commands.getCommandConditions().addCondition("is_mayor", c -> {
             if (!TownyUtils.isMayor(c.getIssuer().getUniqueId())) {
-                throw new ConditionFailedException(TownyPortal.text("chat-message.only-mayor-can-use"));
+                throw new ConditionFailedException(TownyPortal.text("town-board.only-mayor-can-use"));
             }
         });
     }

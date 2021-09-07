@@ -10,6 +10,7 @@ import com.Acrobot.ChestShop.Events.ShopCreatedEvent;
 import com.Acrobot.ChestShop.Events.ShopDestroyedEvent;
 import com.Acrobot.ChestShop.Signs.ChestShopSign;
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.event.DeleteTownEvent;
 import com.palmergames.bukkit.towny.object.Town;
 import me.lucko.helper.Events;
 import me.lucko.helper.terminable.TerminableConsumer;
@@ -17,6 +18,8 @@ import me.lucko.helper.terminable.module.TerminableModule;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 public class ShopListener implements TerminableModule {
 
@@ -117,6 +120,12 @@ public class ShopListener implements TerminableModule {
                         TownyPortal.logger().info("Removed shop model from datasource");
                     }
                 }).bindWith(consumer);
+
+        // remove all shop models of a town if deleted
+        Events.subscribe(DeleteTownEvent.class).handler(e -> {
+            final UUID townUUID = e.getTownUUID();
+            TownyPortal.shopModelDatasource().removeShopModel(townUUID);
+        }).bindWith(consumer);
     }
 
 }

@@ -4,7 +4,9 @@ import co.mcsky.moecore.gui.PaginatedView;
 import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.moecore.skull.SkinFetchCompleteEvent;
 import co.mcsky.moecore.skull.SkullCache;
+import co.mcsky.moecore.skull.SkullCreator;
 import co.mcsky.townyportal.TownyPortal;
+import co.mcsky.townyportal.gui.SkullBase64;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Town;
 import me.lucko.helper.Events;
@@ -88,36 +90,38 @@ public class TownListingView extends PaginatedView {
     }
 
     @Override
-    public int nextPageSlot() {
-        return new MenuScheme()
-                .maskEmpty(5)
-                .mask("100000000")
-                .getMaskedIndexesImmutable().get(0);
-    }
-
-    @Override
     public int previousPageSlot() {
         return new MenuScheme()
                 .maskEmpty(5)
-                .mask("010000000")
+                .mask("000100000")
                 .getMaskedIndexesImmutable().get(0);
     }
 
     @Override
-    public Function<PageInfo, ItemStack> nextPageItem() {
-        return pageInfo -> ItemStackBuilder.of(Material.PAPER)
-                .name(TownyPortal.text("gui.town-listing.next-page.name"))
-                .lore(TownyPortal.text("gui.town-listing.next-page.lore1"))
-                .lore(TownyPortal.text("gui.town-listing.next-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
-                .build();
+    public int nextPageSlot() {
+        return new MenuScheme()
+                .maskEmpty(5)
+                .mask("000001000")
+                .getMaskedIndexesImmutable().get(0);
     }
 
     @Override
     public Function<PageInfo, ItemStack> previousPageItem() {
-        return pageInfo -> ItemStackBuilder.of(Material.PAPER)
+        return pageInfo -> ItemStackBuilder.of(Material.PLAYER_HEAD)
+                .transform(itemStack -> SkullCreator.itemWithBase64(itemStack, SkullBase64.LEFT_ARROW))
                 .name(TownyPortal.text("gui.town-listing.previous-page.name"))
                 .lore(TownyPortal.text("gui.town-listing.previous-page.lore1"))
                 .lore(TownyPortal.text("gui.town-listing.previous-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
+                .build();
+    }
+
+    @Override
+    public Function<PageInfo, ItemStack> nextPageItem() {
+        return pageInfo -> ItemStackBuilder.of(Material.PLAYER_HEAD)
+                .transform(itemStack -> SkullCreator.itemWithBase64(itemStack, SkullBase64.RIGHT_ARROW))
+                .name(TownyPortal.text("gui.town-listing.next-page.name"))
+                .lore(TownyPortal.text("gui.town-listing.next-page.lore1"))
+                .lore(TownyPortal.text("gui.town-listing.next-page.lore2", "current_page", pageInfo.getCurrent(), "total_page", pageInfo.getSize()))
                 .build();
     }
 

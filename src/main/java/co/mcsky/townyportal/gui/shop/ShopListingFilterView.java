@@ -14,7 +14,7 @@ public class ShopListingFilterView extends ShopListingAbstractView {
 
     private final static MenuScheme FILTER = new MenuScheme()
             .maskEmpty(5)
-            .mask("111000000");
+            .mask("000111000");
     private final static MenuScheme BACK = new MenuScheme()
             .maskEmpty(5)
             .mask("000000001");

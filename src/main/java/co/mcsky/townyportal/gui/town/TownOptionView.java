@@ -5,6 +5,7 @@ import co.mcsky.moecore.gui.SeamlessGui;
 import co.mcsky.moecore.skull.SkullCreator;
 import co.mcsky.townyportal.TownyPortal;
 import co.mcsky.townyportal.TownyUtils;
+import co.mcsky.townyportal.gui.SkullBase64;
 import co.mcsky.townyportal.gui.shop.ShopListingTownView;
 import co.mcsky.townyportal.util.TownMapBuilder;
 import com.google.common.base.Preconditions;
@@ -27,7 +28,6 @@ import java.util.List;
 
 public class TownOptionView implements GuiView {
 
-    private static final String skin = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmFkNzBhYTMzNWVlYTNlNDY2Zjk2N2MyM2JhNTFlYjgyNzY1YTkwNzIwYzkwOTZiNzBmOGIxYzY1ZmMyYzc3MCJ9fX0=";
     private static final MenuScheme BACKGROUND = new MenuScheme(StandardSchemeMappings.STAINED_GLASS)
             .mask("111111111")
             .mask("101111111")
@@ -133,7 +133,7 @@ public class TownOptionView implements GuiView {
                 .lore(TownyPortal.text("gui.town-options.town-resident.lore1"))
                 .lore("")
                 .lore(TownyPortal.text("gui.town-options.town-resident.lore2"))
-                .transform(i -> SkullCreator.itemWithBase64(i, skin));
+                .transform(i -> SkullCreator.itemWithBase64(i, SkullBase64.RESIDENT_ICON));
         for (List<String> partition : partitions) {
             item.lore(ChatColor.GRAY + partition.stream().reduce(((s1, s2) -> s1 + ", " + s2)).orElse(""));
         }
