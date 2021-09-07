@@ -23,8 +23,10 @@ public class TownyPortalConfig {
 
     public int town_board_max_line;
     public int resident_name_num_per_line;
+
     public boolean bypass_private_town_enabled;
     public int bypass_private_town_duration;
+
     public String town_map_scale;
 
     /* config nodes end */
@@ -45,16 +47,24 @@ public class TownyPortalConfig {
 
         /* initialize config nodes */
 
-        debug = root.node("debug").getBoolean(false);
-        save_interval = root.node("save-interval").getInt(1800);
-        shop_must_inside_plots = root.node("shop-must-inside-plots").getBoolean(true);
-        shop_must_inside_shop_plots = root.node("shop-must-inside-shop-plots").getBoolean(false);
+        final CommentedConfigurationNode internalNode = root.node("internal");
+        debug = internalNode.node("debug").getBoolean(false);
+        save_interval = internalNode.node("save-interval").getInt(1800);
 
-        town_board_max_line = root.node("town-board-max-line").getInt(4);
-        resident_name_num_per_line = root.node("resident-num-per-line").getInt(4);
-        bypass_private_town_enabled = root.node("bypass-private-town-enabled").getBoolean(true);
-        bypass_private_town_duration = root.node("bypass-private-town-duration").getInt(72);
-        town_map_scale = root.node("town-map-scale").getString("CLOSE");
+        final CommentedConfigurationNode chestshopNode = root.node("chestshop");
+        shop_must_inside_plots = chestshopNode.node("shop-must-inside-plots").getBoolean(true);
+        shop_must_inside_shop_plots = chestshopNode.node("shop-must-inside-shop-plots").getBoolean(false);
+
+        final CommentedConfigurationNode townGeneralNode = root.node("town.general");
+        town_map_scale = townGeneralNode.node("town-map-scale").getString("CLOSE");
+
+        final CommentedConfigurationNode townboardNode = root.node("town.board");
+        town_board_max_line = townboardNode.node("town-board-max-line").getInt(4);
+        resident_name_num_per_line = townboardNode.node("resident-num-per-line").getInt(4);
+
+        final CommentedConfigurationNode townTeleportNode = root.node("town.teleport");
+        bypass_private_town_enabled = townTeleportNode.node("bypass-private-town-enabled").getBoolean(true);
+        bypass_private_town_duration = townTeleportNode.node("bypass-private-town-duration").getInt(72);
     }
 
     public void save() {
